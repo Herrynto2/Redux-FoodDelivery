@@ -1,4 +1,5 @@
 // Get All Items & Restaurants (Guest)
+export const GET_ITEMS_ID = 'GET_ITEMS_ID'
 export const GET_ALL_ITEMS = 'GET_ALL_ITEMS'
 export const GET_ALL_RESTAURANTS = 'GET_ALL_RESTAURANTS'
 export const GET_FOOD_CATEGORY = 'GET_FOOD_CATEGORY'

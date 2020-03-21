@@ -1,9 +1,11 @@
-import { GET_ALL_ITEMS, GET_FOOD_CATEGORY, GET_DRINK_CATEGORY } from '../action/types'
+import { GET_ALL_ITEMS, GET_ITEMS_ID, GET_FOOD_CATEGORY, GET_DRINK_CATEGORY } from '../action/types'
 
 const initialState = {
     data_items: [],
     data_foods: [],
-    data_drinks: []
+    data_drinks: [],
+    data_item: null,
+    data_review: []
 }
 
 export default function itemReducer(state = initialState, action) {
@@ -12,6 +14,12 @@ export default function itemReducer(state = initialState, action) {
             return {
                 ...state,
                 data_items: action.payload
+            }
+        case GET_ITEMS_ID:
+            return {
+                ...state,
+                data_item: action.payload,
+                data_review: action.review
             }
         case GET_FOOD_CATEGORY:
             return {

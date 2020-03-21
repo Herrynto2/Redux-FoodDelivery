@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
-import Bakso from '../img/rendang.jpg'
 import { Tab, Tabs, TabPanel, TabList } from 'react-tabs';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import Navbarsubuser from '../components/Navbarsubuser'
@@ -9,13 +7,13 @@ import Reviews from '../components/Reviews'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Modal } from 'react-bootstrap'
+import { getDataItemsID } from '../redux/action/items'
+import { connect } from 'react-redux'
 
 class ItemsID extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
-                data_items: null,
-                data_review: [],
                 review: '',
                 total_item: '',
                 show: false
@@ -23,23 +21,7 @@ class ItemsID extends React.Component {
         }
 
         componentDidMount() {
-            this.getDataItems(this.props.match.params.id)
-        }
-
-        async getDataItems(id) {
-            await axios.get(`http://localhost:3000/detail-items/${id}`)
-                .then(res => {
-                    console.log(res.data)
-                    let dataArr = res.data.data
-                    let dataArr2 = res.data.review
-                    this.setState({
-                        data_items: dataArr,
-                        data_review: dataArr2
-                    })
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+            this.props.getDataItemsID(this.props.match.params.id)
         }
 
         handleTextComment = (e) => {
@@ -137,7 +119,7 @@ class ItemsID extends React.Component {
                         h4 className = " bold mt-5 mb-5 text-center" > Items < /h4>
 
                         {
-                            this.state.data_items && ( <
+                            this.props.data_item && ( <
                                 div className = "card-body-link" >
                                 <
                                 div className = "card mb-5 card-profil" >
@@ -146,7 +128,7 @@ class ItemsID extends React.Component {
                                 <
                                 div className = "row no-gutters" >
                                 <
-                                img src = { process.env.REACT_APP_API_URL + this.state.data_items.images }
+                                img src = { process.env.REACT_APP_API_URL + this.props.data_item.images }
                                 className = "card-img card-img-detail"
                                 alt = "..." / >
                                 <
@@ -155,19 +137,19 @@ class ItemsID extends React.Component {
                                 <
                                 div className = "card-body" >
                                 <
-                                h5 className = "cart-titles" > { this.state.data_items.name_restaurant } < /h5> <
+                                h5 className = "cart-titles" > { this.props.data_item.name_restaurant } < /h5> <
                                 hr / >
                                 <
-                                h6 className = "cart-resto" > { this.state.data_items.name_item } - { this.state.data_items.location } < /h6> <
-                                p className = "text-muted" > { this.state.data_items.desciption } < /p> <
-                                h6 className = "cart-price" > Rp. { this.state.data_items.price } < /h6> <
+                                h6 className = "cart-resto" > { this.props.data_item.name_item } - { this.props.data_item.location } < /h6> <
+                                p className = "text-muted" > { this.props.data_item.desciption } < /p> <
+                                h6 className = "cart-price" > Rp. { this.props.data_item.price } < /h6> <
                                 /div> <
                                 /div> <
                                 /div> <
                                 /div> <
                                 /div>
                             )
-                        } <
+                        } { console.log('data', this.props.data_item) } <
                         button onClick = {
                             () => { this.handleModal() } }
                         type = "button"
@@ -192,7 +174,7 @@ class ItemsID extends React.Component {
                         TabPanel > < /TabPanel> <
                         /TabContent> <
                         TabPanel > {
-                            this.state.data_review.map((val, idx) => ( <
+                            this.props.data_review.map((val, idx) => ( <
                                     Reviews name = { val.name_user }
                                     date_created = { val.date_created }
                                     review = { val.review }
@@ -217,12 +199,12 @@ class ItemsID extends React.Component {
                                     /TabPanel> <
                                     /Tabs> <
                                     /div> { /* Add Items Hide*/ } {
-                                        this.state.data_items && ( <
+                                        this.props.data_item && ( <
                                             Modal centered show = { this.state.show }
                                             onHide = {
                                                 () => this.handleModal() } >
                                             <
-                                            Modal.Header closeButton > < span className = "bold text-muted" > { this.state.data_items.name_restaurant } < /span></Modal.Header >
+                                            Modal.Header closeButton > < span className = "bold text-muted" > { this.props.data_item.name_restaurant } < /span></Modal.Header >
                                             <
                                             Modal.Body className = "text-center" >
                                             <
@@ -232,7 +214,7 @@ class ItemsID extends React.Component {
                                             <
                                             div class = "col-md-4" >
                                             <
-                                            img src = { process.env.REACT_APP_API_URL + this.state.data_items.images }
+                                            img src = { process.env.REACT_APP_API_URL + this.props.data_item.images }
                                             className = "imgshapes" / >
                                             <
                                             /div> <
@@ -240,7 +222,7 @@ class ItemsID extends React.Component {
                                             <
                                             div class = "card-body card-bodies" >
                                             <
-                                            h6 className = "cart-prices" > Rp. { this.state.data_items.price } < span > /item</span > < /h6>
+                                            h6 className = "cart-prices" > Rp. { this.props.data_item.price } < span > /item</span > < /h6>
 
                                             <
                                             input type = "number"
@@ -269,4 +251,11 @@ class ItemsID extends React.Component {
                             }
                         }
 
-                        export default ItemsID;
+                        const mapStateToProps = state => ({
+                            data_item: state.items.data_item,
+                            data_review: state.items.data_review
+                        })
+
+                        const mapDispatchToProps = { getDataItemsID }
+
+                        export default connect(mapStateToProps, mapDispatchToProps)(ItemsID)
