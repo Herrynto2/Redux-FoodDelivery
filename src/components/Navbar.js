@@ -34,7 +34,6 @@ class Navbars extends React.Component {
     componentDidMount() {
         window.addEventListener('scroll', () => {
             const isTop = window.scrollY < 650;
-            console.log(window.scrollY)
             if (isTop !== true) {
                 this.setState({ scrolled: true })
             } else {

@@ -60,7 +60,7 @@ class ReviewItemResto extends React.Component {
             Media body >
             <
             Media heading className = "reviewer" > { this.props.name } <
-            /Media><hr/ >
+            /Media><hr / >
             <
             p className = "text-muted datereview" > Date Creted: { this.props.date_created } < /p> <
             span className = "reviewerComn" > { this.props.review } < /span> <

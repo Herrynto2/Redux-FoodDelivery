@@ -12,7 +12,8 @@ class Profileusers extends React.Component {
 
     render() {
         return ( <
-            div > { console.log('lul', this.props.data_updated) } <
+            div >
+            <
             div className = "container" >
             <
             Link to = "/userprofile"

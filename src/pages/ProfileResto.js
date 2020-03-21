@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Navbarsubuser from '../components/Navbarsubuser'
 import Swal from 'sweetalert2'
+import { getDataAdmin } from '../redux/action/users'
+import { connect } from 'react-redux'
 
 class Profilerestaurant extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data_profile: {},
             name_restaurant: '',
             created_by: '',
             description: '',
@@ -19,7 +20,7 @@ class Profilerestaurant extends React.Component {
 
 
     componentDidMount() {
-        this.getDataResto()
+        this.props.getDataAdmin()
     }
     async getDataResto() {
         await axios.get(`http://localhost:3000/restaurant`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
@@ -126,7 +127,7 @@ class Profilerestaurant extends React.Component {
             Link to = "/items" > < button class = " btnitems btn btn-warning my-2 my-sm-0"
             type = "submit" > Items < /button></Link >
             <
-            img src = { process.env.REACT_APP_API_URL + this.state.data_profile.logo }
+            img src = { process.env.REACT_APP_API_URL + this.props.data_admin.logo }
             name = "logo"
             className = "sizeuserprofile mb-3 mt-4" / >
             <
@@ -149,7 +150,7 @@ class Profilerestaurant extends React.Component {
             type = "text"
             className = "form-control"
             id = "exampleFormControlInput1"
-            defaultValue = { this.state.data_profile.name_restaurant }
+            defaultValue = { this.props.data_admin.name_restaurant }
             /> <
             label
             for = "exampleFormControlInput1"
@@ -159,7 +160,7 @@ class Profilerestaurant extends React.Component {
             type = "text"
             className = "form-control"
             id = "exampleFormControlInput1"
-            defaultValue = { this.state.data_profile.created_by }
+            defaultValue = { this.props.data_admin.created_by }
             /> <
             label
             for = "exampleFormControlInput1"
@@ -169,7 +170,7 @@ class Profilerestaurant extends React.Component {
             type = "text"
             className = "form-control"
             id = "exampleFormControlInput1"
-            defaultValue = { this.state.data_profile.description }
+            defaultValue = { this.props.data_admin.description }
             /> <
             label
             for = "exampleFormControlInput1"
@@ -179,7 +180,7 @@ class Profilerestaurant extends React.Component {
             type = "text"
             className = "form-control mb-4"
             id = "exampleFormControlInput1"
-            defaultValue = { this.state.data_profile.location }
+            defaultValue = { this.props.data_admin.location }
             /> <
             button onClick = { e => this.handleEdit(e) }
             class = "btn btn-warning my-2 my-sm-0"
@@ -195,4 +196,9 @@ class Profilerestaurant extends React.Component {
     }
 }
 
-export default Profilerestaurant;
+const mapStateToProps = state => ({
+    data_admin: state.user.data_admin
+})
+const mapDispatchToProps = { getDataAdmin }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profilerestaurant)

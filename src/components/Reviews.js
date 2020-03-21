@@ -36,7 +36,7 @@ class Reviews extends React.Component {
             span className = "text-muted daterev" > Date post: { this.props.date_created } < /span> <
             p > { this.props.review } < /p> <
             /Media> <
-            /Media>   <
+            /Media> <
             /div> <
             /div> <
             /div> <

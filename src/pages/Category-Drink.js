@@ -3,10 +3,8 @@ import '../assets/Style.css'
 import Navbarsub from '../components/Navbarsub'
 import ListItems from '../components/Listitems'
 import Footer from '../components/Footer'
-import axios from 'axios'
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { connect } from 'react-redux'
-import { getDrinksCategory } from '../redux/action/categoryDrink'
+import { getDrinksCategory } from '../redux/action/items'
 
 class CategoryDrink extends React.Component {
 
@@ -18,9 +16,7 @@ class CategoryDrink extends React.Component {
         render() {
                 return ( <
                         div > { /* Navbar */ } <
-                        Navbarsub / >
-
-                        { /* Content Items */ } <
+                        Navbarsub / > { console.log('keys', this.props.data_drinks) } { /* Content Items */ } <
                         div >
                         <
                         div className = "container margincontent" >
@@ -31,7 +27,7 @@ class CategoryDrink extends React.Component {
                         <
                         /div> <
                         div className = "row " > {
-                            this.props.drink_category.map((val, idx) => ( <
+                            this.props.data_drinks.map((val, idx) => ( <
                                     ListItems key = { idx }
                                     items = { val.name_item }
                                     restaurant = { val.name_restaurant }
@@ -53,7 +49,7 @@ class CategoryDrink extends React.Component {
 
 
                         const mapStateToProps = state => ({
-                            drink_category: state.drinksCategory.drink_category
+                            data_drinks: state.items.data_drinks
                         })
 
                         const mapDispatchToProps = { getDrinksCategory }

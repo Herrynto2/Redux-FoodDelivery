@@ -4,7 +4,7 @@ const initialState = {
     data_cart: []
 }
 
-export default function cartsGet(state = initialState, action) {
+export default function cartReducer(state = initialState, action) {
     switch (action.type) {
         case GET_CART_USER:
             return {

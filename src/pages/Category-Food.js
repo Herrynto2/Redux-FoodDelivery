@@ -4,7 +4,7 @@ import Navbarsub from '../components/Navbarsub'
 import ListItem from '../components/Listitems'
 import Footer from '../components/Footer'
 import { connect } from 'react-redux'
-import { getFoodsCategory } from '../redux/action/categoryFood'
+import { getFoodsCategory } from '../redux/action/items'
 
 class CategoryFood extends React.Component {
 
@@ -15,9 +15,7 @@ class CategoryFood extends React.Component {
         render() {
                 return ( <
                         div > { /* Navbar */ } <
-                        Navbarsub / >
-
-                        { /* Content Items */ } <
+                        Navbarsub / > { console.log('keys', this.props.data_foods) } { /* Content Items */ } <
                         div >
                         <
                         div className = "container margincontent" >
@@ -28,7 +26,7 @@ class CategoryFood extends React.Component {
                         <
                         /div> <
                         div className = "row " > {
-                            this.props.foods_category.map((val, idx) => ( <
+                            this.props.data_foods.map((val, idx) => ( <
                                     ListItem key = { idx }
                                     items = { val.name_item }
                                     restaurant = { val.name_restaurant }
@@ -48,7 +46,7 @@ class CategoryFood extends React.Component {
 
 
                         const mapStateToProps = state => ({
-                            foods_category: state.foodsCategory.foods_category
+                            data_foods: state.items.data_foods
                         })
 
                         const mapDispatchToProps = { getFoodsCategory }

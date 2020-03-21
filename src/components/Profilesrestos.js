@@ -1,42 +1,17 @@
 import React from 'react';
-import axios from 'axios'
 import { Link } from 'react-router-dom'
-import resto from '../img/resto2.jpg'
+import { getDataAdmin } from '../redux/action/users'
+import { connect } from 'react-redux'
 
 class Profilerestos extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            data_profile: {}
-        }
-    }
 
     componentDidMount() {
-        this.getDataResto()
+        this.props.getDataAdmin()
     }
-
-    async getDataResto() {
-        // await axios.get("http://localhost:3000/detail-items/" + this.props.match.params.id)
-        console.log(window.localStorage.getItem('token'))
-        await axios.get(`http://localhost:3000/restaurant`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
-            .then(res => {
-                console.log(res)
-                console.log(res.data.data[0])
-                let dataArr = res.data.data[0]
-                this.setState({
-                    data_profile: dataArr,
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-
 
     render() {
         return ( <
-            div >
-            <
+            div > { console.log(this.props.data_admin) } <
             div className = "container" >
             <
             Link to = "/restaurantprofile"
@@ -48,7 +23,7 @@ class Profilerestos extends React.Component {
             <
             div className = "row no-gutters" >
             <
-            img src = { process.env.REACT_APP_API_URL + this.state.data_profile.logo }
+            img src = { process.env.REACT_APP_API_URL + this.props.data_admin.logo }
             className = "card-img card-img-profile" / >
             <
             /div> <
@@ -56,13 +31,13 @@ class Profilerestos extends React.Component {
             <
             div className = "card-body " >
             <
-            h5 className = "card-title" > { this.state.data_profile.name_restaurant } < /h5> <
+            h5 className = "card-title" > { this.props.data_admin.name_restaurant } < /h5> <
             hr / >
             <
-            p className = "card-text" > < small className = "text-muted" > Last updated { this.state.data_profile.date_updated } < /small></p >
+            p className = "card-text" > < small className = "text-muted" > Last updated { this.props.data_admin.date_updated } < /small></p >
             <
-            p className = "card-text text-muted mb-5" > { this.state.data_profile.description } < /p> <
-            h5 className = "card-text text-muted" > { this.state.data_profile.location } < /h5>
+            p className = "card-text text-muted mb-5" > { this.props.data_admin.description } < /p> <
+            h5 className = "card-text text-muted" > { this.props.data_admin.location } < /h5>
 
             <
             /div> <
@@ -76,4 +51,9 @@ class Profilerestos extends React.Component {
     }
 }
 
-export default Profilerestos;
+const mapStateToProps = state => ({
+    data_admin: state.user.data_admin
+})
+const mapDispatchToProps = { getDataAdmin }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profilerestos)

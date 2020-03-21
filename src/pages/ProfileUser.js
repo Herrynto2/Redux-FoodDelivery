@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios'
 import Navbarsubuser from '../components/Navbarsubuser'
 import Swal from 'sweetalert2'
+import { getDataUser } from '../redux/action/users'
+import { connect } from 'react-redux'
 
 class Profileuser extends React.Component {
 
@@ -9,7 +11,6 @@ class Profileuser extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data_profile: {},
             saldo: '',
             name_user: '',
             email: '',
@@ -20,34 +21,9 @@ class Profileuser extends React.Component {
         }
     }
     componentDidMount() {
-        this.getDataUsers()
-    }
-    async getDataUsers() {
-        // await axios.get("http://localhost:3000/detail-items/" + this.props.match.params.id)
-        console.log(window.localStorage.getItem('token'))
-        await axios.get(`http://localhost:3000/profile`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
-            .then(res => {
-                const x = "heriheryanto"
-                    // console.log(x.substr(2, 4))
-                console.log(res.data.data[0][0].images)
-                let dataArr = res.data.data[0][0]
-                this.setState({
-                    data_profile: dataArr
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        this.props.getDataUser()
     }
 
-    // componentWillUpdate(firstState){
-    //     if(parseInt(firstState.saldo) !== parseInt(this.state.saldo)){
-    //         this.getDataUsers()
-    //         return;
-    //     } else {
-    //         return;
-    //     }
-    // }
 
     // Topup
     handleBalance = (e) => {
@@ -178,7 +154,7 @@ class Profileuser extends React.Component {
             <
             div className = "col-lg-4 sizeprofile" >
             <
-            img src = { process.env.REACT_APP_API_URL + this.state.data_profile.images }
+            img src = { process.env.REACT_APP_API_URL + this.props.data_user.images }
             className = "sizeuserprofile mb-3" / >
             <
             input type = "file"
@@ -188,8 +164,9 @@ class Profileuser extends React.Component {
             textarea onChange = { e => this.handleAddress(e) }
             name = "address"
             className = "form-control address"
-            rows = "3"
-            defaultValue = { this.state.data_profile.address } > < /textarea> <
+            rows = "3" > < /textarea>
+
+            <
             /div> <
             div className = "col-lg-1" > < /div> <
             div className = "col-lg-6" >
@@ -199,7 +176,7 @@ class Profileuser extends React.Component {
             button onClick = { e => this.handleTopup(e) }
             class = "btn btn-warning btntopup"
             type = "submit" > Topup < /button> <
-            span className = "value" > Rp. { this.state.data_profile.Saldo } < /span> <
+            span className = "value" > Rp. { this.props.data_user.Saldo } < /span> <
             input onChange = { e => this.handleBalance(e) }
             type = "number"
             width = "100px"
@@ -221,7 +198,7 @@ class Profileuser extends React.Component {
             type = "text"
             className = "form-control"
             id = "exampleFormControlInput1"
-            defaultValue = { this.state.data_profile.name_user }
+            defaultValue = { this.props.data_user.name_user }
             disable / >
             <
             label
@@ -232,7 +209,7 @@ class Profileuser extends React.Component {
             name = "email"
             className = "form-control"
             id = "exampleFormControlInput1"
-            defaultValue = { this.state.data_profile.email }
+            defaultValue = { this.props.data_user.email }
             /> <
             label
             for = "exampleFormControlInput1"
@@ -254,7 +231,7 @@ class Profileuser extends React.Component {
             type = "text"
             className = "form-control mb-4"
             id = "exampleFormControlInput1"
-            defaultValue = { this.state.data_profile.work }
+            defaultValue = { this.props.data_user.work }
             /> <
             button onClick = { e => this.handleProfile(e) }
             class = "btn btn-warning my-2 my-sm-0"
@@ -271,4 +248,9 @@ class Profileuser extends React.Component {
     }
 }
 
-export default Profileuser;
+const mapStateToProps = state => ({
+    data_user: state.user.data_user
+})
+const mapDispatchToProps = { getDataUser }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profileuser)

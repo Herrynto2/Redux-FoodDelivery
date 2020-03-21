@@ -4,7 +4,7 @@ const initialState = {
     data_restaurants: []
 }
 
-export default function restaurantsGet(state = initialState, action) {
+export default function restaurantReducer(state = initialState, action) {
     switch (action.type) {
         case GET_ALL_RESTAURANTS:
             return {

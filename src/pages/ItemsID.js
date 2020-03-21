@@ -9,7 +9,6 @@ import Reviews from '../components/Reviews'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Modal } from 'react-bootstrap'
-import Default from '../img/default.png'
 
 class ItemsID extends React.Component {
         constructor(props) {
@@ -49,12 +48,6 @@ class ItemsID extends React.Component {
                 review: e.target.value
             })
         }
-        handleValue = (e) => {
-            console.log(e.target.value)
-            this.setState({
-                total_item: e.target.value
-            })
-        }
 
         handleComment = async(e) => {
             const data = {
@@ -89,6 +82,13 @@ class ItemsID extends React.Component {
         }
 
         ////Add To Cart
+        handleValue = (e) => {
+            console.log(e.target.value)
+            this.setState({
+                total_item: e.target.value
+            })
+        }
+
         handleAddToCart = async(e) => {
             const data = {
                 total_item: this.state.total_item
@@ -189,8 +189,8 @@ class ItemsID extends React.Component {
                         <
                         TabContent >
                         <
-                        TabPanel > < /TabPanel>    <
-                        /TabContent>  <
+                        TabPanel > < /TabPanel> <
+                        /TabContent> <
                         TabPanel > {
                             this.state.data_review.map((val, idx) => ( <
                                     Reviews name = { val.name_user }
