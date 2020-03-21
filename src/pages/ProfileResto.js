@@ -5,6 +5,7 @@ import Navbarsubuser from '../components/Navbarsubuser'
 import Swal from 'sweetalert2'
 import { getDataAdmin } from '../redux/action/users'
 import { connect } from 'react-redux'
+import { CustomInput } from 'reactstrap'
 
 class Profilerestaurant extends React.Component {
     constructor(props) {
@@ -131,10 +132,10 @@ class Profilerestaurant extends React.Component {
             name = "logo"
             className = "sizeuserprofile mb-3 mt-4" / >
             <
-            input onChange = { e => this.handleLogo(e) }
-            type = "file"
-            className = "form-control-file"
-            id = "exampleFormControlInput1" / >
+            CustomInput type = "file"
+            onChange = { e => this.handleLogo(e) }
+            name = "images"
+            className = "handleImages" / >
             <
             /div> <
             div className = "col-lg-1" > < /div> <

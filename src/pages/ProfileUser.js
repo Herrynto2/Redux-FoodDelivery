@@ -4,6 +4,7 @@ import Navbarsubuser from '../components/Navbarsubuser'
 import Swal from 'sweetalert2'
 import { getDataUser } from '../redux/action/users'
 import { connect } from 'react-redux'
+import { CustomInput } from 'reactstrap'
 
 class Profileuser extends React.Component {
 
@@ -23,7 +24,6 @@ class Profileuser extends React.Component {
     componentDidMount() {
         this.props.getDataUser()
     }
-
 
     // Topup
     handleBalance = (e) => {
@@ -157,9 +157,10 @@ class Profileuser extends React.Component {
             img src = { process.env.REACT_APP_API_URL + this.props.data_user.images }
             className = "sizeuserprofile mb-3" / >
             <
-            input type = "file"
+            CustomInput type = "file"
             onChange = { e => this.handleImages(e) }
-            className = "form-control-file" / >
+            name = "images"
+            className = "handleImages" / >
             <
             textarea onChange = { e => this.handleAddress(e) }
             name = "address"

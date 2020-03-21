@@ -126,10 +126,7 @@ class Itemsresto extends React.Component {
         handleModal() {
             this.setState({ show: !this.state.show })
         }
-
-
         render() {
-
                 const style = {
                     background: 'linear-gradient(45deg, #ffc107 30%, #ffc107 90%)',
                     color: 'white',
@@ -238,43 +235,7 @@ class Itemsresto extends React.Component {
                                     Modal.Footer >
                                     <
                                     /Modal.Footer> <
-                                    /Modal>
-
-                                    { /* Pagination */ } <
-                                    div className = "container marginpaginat mt-5" >
-                                    <
-                                    div className = "row justify-content-center" >
-                                    <
-                                    Pagination >
-                                    <
-                                    PaginationItem >
-                                    <
-                                    PaginationLink first href = "#" / >
-                                    <
-                                    /PaginationItem> <
-                                    PaginationItem >
-                                    <
-                                    PaginationLink previous href = "#" / >
-                                    <
-                                    /PaginationItem> <
-                                    PaginationItem active >
-                                    <
-                                    PaginationLink href = "#" > 1 <
-                                    /PaginationLink> <
-                                    /PaginationItem> <
-                                    PaginationItem >
-                                    <
-                                    PaginationLink next href = "#" / >
-                                    <
-                                    /PaginationItem> <
-                                    PaginationItem >
-                                    <
-                                    PaginationLink last href = "#" / >
-                                    <
-                                    /PaginationItem> <
-                                    /Pagination> <
-                                    /div> <
-                                    /div> <
+                                    /Modal> <
                                     /div>
                                 )
                             }
