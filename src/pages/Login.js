@@ -3,6 +3,9 @@ import '../assets/Login.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { loginUser } from '../redux/action/auth'
+import { connect } from 'react-redux'
+
 
 class Login extends React.Component {
 
@@ -39,29 +42,27 @@ class Login extends React.Component {
             password: this.state.password
         }
         const alerts = Swal.mixin({ customClass: { confirmButton: 'btn btn-warning' } })
-            //Validation username && password
         if (this.state.username === "" && this.state.password === "") {
             alerts.fire({ icon: 'error', text: 'Data connot be empty' })
         } else {
-            axios.post('http://localhost:3000/login', { //check to port 3000 from table users that connect to backend
-                    username: this.state.username,
-                    password: this.state.password
-                })
+            axios.post('http://localhost:3000/login', data)
                 .then(res => {
-                    console.log(res) //to get data token 
-                    if (res.status === 200) { // 200 is http code success
+                    console.log(res.data.data.token)
+                    if (res.data.success === true) {
                         try {
-                            localStorage.setItem('token', JSON.stringify(res.data.data.token)) //save token to localstorage
+                            this.props.loginUser(res.data.data.token)
                             this.props.history.push('/home')
                         } catch (error) {
-                            alerts.fire({ icon: 'error', text: `${error.response.msg}` })
+                            alerts.fire({ icon: 'error', text: "" })
+                            console.log(error)
                         }
+                    } else {
+                        alerts.fire({ icon: 'error', title: 'Oops...', text: 'Username or password wrong' })
                     }
                 })
                 .catch(err => {
                     console.log(err)
-                    console.log(err.response)
-                    alerts.fire({ icon: 'error', title: 'Oops...', text: 'Username or password wrong' })
+                    alerts.fire({ icon: 'error', title: 'Oops...', text: 'Invalid' })
                 })
         }
     }
@@ -136,4 +137,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default connect(null, { loginUser })(Login)

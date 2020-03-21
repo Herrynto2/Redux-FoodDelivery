@@ -2,11 +2,7 @@ import { USER_LOGIN } from '../action/types'
 
 
 const initialState = {
-    userData: {},
-    loginToken: '',
-    isUserAuthenticated: false,
-    isLoggedIn: false,
-    isLoading: false
+    token: ''
 }
 
 export default function authReducer(state = initialState, action) {
@@ -14,35 +10,8 @@ export default function authReducer(state = initialState, action) {
         case USER_LOGIN:
             return {
                 ...state,
-                isLoading: !state.isLoading,
-                isLoggedIn: !state.isLoggedIn
+                token: action.payload
             }
-
-            // case USER_LOGIN_SUCCESS: return {
-            //     ...state,
-            //     isLoading: !state.isLoading,
-            //     loginToken: action.payload,
-            //     isUserAuthenticated: !state.isUserAuthenticated
-            // }
-
-            // case USER_LOGOUT:
-            //     return {
-            //         ...state,
-            //         userData: {},
-            //         loginToken: '',
-            //         isUserAuthenticated: false,
-            //         isLoggedIn: false
-            //     }
-
-            // case GET_USER_PROFILE: return {
-            //     ...state,
-            //     userData: action.payload
-            // }
-
-            // case CHECK_LOGIN_TOKEN: return {
-            //     ...state,
-            //     isUserAuthenticated: true
-            // }
         default:
             return state
     }
