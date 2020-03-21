@@ -11,9 +11,9 @@ class ListItemResto extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.getDataItems()
-    }
+    // componentDidMount() {
+    //     this.getDataItems()
+    // }
 
     // componentDidUpdate(prev, next) {
     //     if (!this.state.onDelete) {
@@ -22,21 +22,6 @@ class ListItemResto extends React.Component {
     //         this.setState({onDelete:false})
     //     }
     // }
-
-
-    async getDataItems() {
-        await axios.get(`http://localhost:3000/items`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
-            .then(res => {
-                console.log('Refresh')
-                let dataArr = res.data.data
-                this.setState({
-                    data_items: dataArr,
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
 
 
     handleDelete = async(e, id) => {
@@ -59,7 +44,6 @@ class ListItemResto extends React.Component {
             })
             .catch(err => {
                 alerts.fire({ icon: 'error', text: `error` })
-                this.getDataItems()
             })
     }
 

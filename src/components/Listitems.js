@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import cart from '../img/cart.png'
 import Swal from 'sweetalert2'
 import { Modal } from 'react-bootstrap'
+import { getDataItemsID } from '../redux/action/items'
+import { connect } from 'react-redux'
 
 class ListItems extends React.Component {
     constructor(props) {
@@ -11,29 +13,14 @@ class ListItems extends React.Component {
         this.state = {
             visible: false,
             show: false,
-            data_items: null,
             total_item: ''
         }
         this.handleModal = this.handleModal.bind(this)
     }
 
-
-    async getDataItems(id) {
-        await axios.get(`http://localhost:3000/detail-items/${id}`)
-            .then(res => {
-                console.log(res.data.data)
-                let dataArr = res.data.data
-                this.setState({ data_items: dataArr })
-            })
-            .catch(err => {
-                console.log('errors', err)
-                console.log('error', err.response.data.message)
-            })
-    }
-
     handleModal(e, id) {
         e.preventDefault()
-        this.getDataItems(this.props.id)
+        this.props.getDataItemsID(this.props.id)
         console.log(this.props.id)
         this.setState({ show: !this.state.show })
 
@@ -104,12 +91,12 @@ class ListItems extends React.Component {
             /div> <
             /div> <
             /Link> {
-                this.state.data_items && ( <
+                this.props.data_item && ( <
                     Modal centered show = { this.state.show }
                     onHide = {
                         () => this.setState({ show: false }) } >
                     <
-                    Modal.Header closeButton > < span className = "bold text-muted" > { this.state.data_items.name_restaurant } < /span></Modal.Header >
+                    Modal.Header closeButton > < span className = "bold text-muted" > { this.props.data_item.name_restaurant } < /span></Modal.Header >
                     <
                     Modal.Body className = "text-center" >
                     <
@@ -119,7 +106,7 @@ class ListItems extends React.Component {
                     <
                     div class = "col-md-4" >
                     <
-                    img src = { process.env.REACT_APP_API_URL + this.state.data_items.images }
+                    img src = { process.env.REACT_APP_API_URL + this.props.data_item.images }
                     className = "imgshapes" / >
                     <
                     /div> <
@@ -127,7 +114,7 @@ class ListItems extends React.Component {
                     <
                     div class = "card-body card-bodies" >
                     <
-                    h6 className = "cart-prices" > Rp. { this.state.data_items.price } < span className = "peritem" > /item</span > < /h6>
+                    h6 className = "cart-prices" > Rp. { this.props.data_item.price } < span className = "peritem" > /item</span > < /h6>
 
                     <
                     input type = "number"
@@ -155,4 +142,10 @@ class ListItems extends React.Component {
     }
 }
 
-export default ListItems;
+const mapStateToProps = state => ({
+    data_item: state.items.data_item
+})
+
+const mapDispatchToProps = { getDataItemsID }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListItems)

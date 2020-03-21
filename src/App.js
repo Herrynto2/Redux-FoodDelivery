@@ -19,7 +19,6 @@ import CartsItem from '../src/pages/Carts'
 import CartID from '../src/pages/Checkout'
 import Itemsresto from '../src/pages/Itemsresto'
 import ItemsRestoDetail from '../src/pages/Itemsrestodetail'
-import ItemsRestoAdd from '../src/pages/Itemsrestoadd'
 import Verify from '../src/pages/Signupverify'
 import ItemsID from '../src/pages/ItemsID'
 import RestaurantID from '../src/pages/RestaurantID'
@@ -84,9 +83,6 @@ function App() {
 
         <Route path="/items" render={(props) =>
           (<Itemsresto{...props}/>)}/>
-
-        <Route path="/add-items" render={(props) =>
-          (<ItemsRestoAdd{...props}/>)}/>
 
         <Route path="/restaurant-items/:id" render={(props) =>
           (<ItemsRestoDetail{...props}/>)}/>

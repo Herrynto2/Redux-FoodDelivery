@@ -2,7 +2,6 @@ import React from 'react';
 import '../assets/Login.css'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Alert } from 'reactstrap';
 import Swal from 'sweetalert2'
 
 class ForgotPassword extends React.Component {

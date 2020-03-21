@@ -33,7 +33,6 @@ class Login extends React.Component {
 
     //When login button click
     handleLogin = (e) => {
-        console.log(this.state.username, this.state.password)
         e.preventDefault()
         const data = {
             username: this.state.username,
@@ -53,7 +52,7 @@ class Login extends React.Component {
                     if (res.status === 200) { // 200 is http code success
                         try {
                             localStorage.setItem('token', JSON.stringify(res.data.data.token)) //save token to localstorage
-                            this.props.history.push('/home') //push home page
+                            this.props.history.push('/home')
                         } catch (error) {
                             alerts.fire({ icon: 'error', text: `${error.response.msg}` })
                         }

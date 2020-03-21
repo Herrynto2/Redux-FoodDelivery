@@ -3,14 +3,14 @@ import Navbarsubuser from '../components/Navbarsubuser'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Modal } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { getCartItemID } from '../redux/action/cart'
 
 class Checkout extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            data_carts: null,
-            checkout: null,
             total_item: 1,
             show: false
         }
@@ -28,26 +28,8 @@ class Checkout extends React.Component {
     }
 
     componentDidMount() {
-        this.getDataItems(this.props.match.params.id)
+        this.props.getCartItemID(this.props.match.params.id)
     }
-    async getDataItems(id) {
-        console.log(window.localStorage.getItem('token'))
-        await axios.get(`http://localhost:3000/cart/${id}`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
-            .then(res => {
-                console.log(res.data.checkout)
-                let dataArr = res.data.data[0]
-                console.log(res.data.data)
-                let dataArr2 = res.data.checkout
-                this.setState({
-                    data_carts: dataArr,
-                    chekout: dataArr2
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-
 
     ////Checkout
     handleCheckout = async(e) => {
@@ -93,7 +75,7 @@ class Checkout extends React.Component {
             div className = 'container' >
             <
             h4 className = " bold mt-5 mb-5 text-center " > Checkout Item < /h4> {
-                this.state.data_carts && ( <
+                this.props.data_cartID && ( <
                     div className = "card-body-link" >
                     <
                     div className = "card mb-5 card-profil" >
@@ -102,7 +84,7 @@ class Checkout extends React.Component {
                     <
                     div className = "row no-gutters" >
                     <
-                    img src = { process.env.REACT_APP_API_URL + this.state.data_carts.images }
+                    img src = { process.env.REACT_APP_API_URL + this.props.data_cartID.images }
                     className = "card-img card-img-detail"
                     alt = "..." / >
                     <
@@ -111,12 +93,12 @@ class Checkout extends React.Component {
                     <
                     div className = "card-body" >
                     <
-                    h5 className = "cart-titles" > { this.state.data_carts.name_item } < /h5> <
+                    h5 className = "cart-titles" > { this.props.data_cartID.name_item } < /h5> <
                     hr / >
                     <
-                    h6 className = "cart-resto" > { this.state.data_carts.name_restaurant } - { this.state.data_carts.location } < /h6> <
-                    p className = "text-muted" > { this.state.data_carts.description } < /p> <
-                    h6 className = "cart-price" > Rp. { this.state.data_carts.price } < span className = "text-" > /item</span > < /h6> <
+                    h6 className = "cart-resto" > { this.props.data_cartID.name_restaurant } - { this.props.data_cartID.location } < /h6> <
+                    p className = "text-muted" > { this.props.data_cartID.description } < /p> <
+                    h6 className = "cart-price" > Rp. { this.props.data_cartID.price } < span className = "text-" > /item</span > < /h6> <
                     /div> <
                     /div> <
                     /div> <
@@ -134,19 +116,19 @@ class Checkout extends React.Component {
             <
             button onClick = {
                 () => { this.handleModal() } }
-            className = "ml-3 btn btn-danger bold" > Rp. { this.state.chekout } < /button> <
+            className = "ml-3 btn btn-danger bold" > Rp. { this.props.checkout } < /button> <
             /div> <
             /div> <
             /div> <
             /div>
 
             { /* Add Items Hide*/ } {
-                this.state.data_carts && ( <
+                this.props.data_cartID && ( <
                     Modal centered show = { this.state.show }
                     onHide = {
                         () => this.handleModal() } >
                     <
-                    Modal.Header closeButton > < span className = "bold text-muted" > { this.state.data_carts.name_item } < /span></Modal.Header >
+                    Modal.Header closeButton > < span className = "bold text-muted" > { this.props.data_cartID.name_item } < /span></Modal.Header >
                     <
                     Modal.Body className = "text-center" >
                     <
@@ -156,7 +138,7 @@ class Checkout extends React.Component {
                     <
                     div class = "col-md-4" >
                     <
-                    img src = { process.env.REACT_APP_API_URL + this.state.data_carts.images }
+                    img src = { process.env.REACT_APP_API_URL + this.props.data_cartID.images }
                     className = "imgshapes" / >
                     <
                     /div> <
@@ -164,7 +146,7 @@ class Checkout extends React.Component {
                     <
                     div class = "card-body card-bodies" >
                     <
-                    h6 className = "cart-prices" > Rp. { this.state.data_carts.price } < span > /item</span > < /h6>
+                    h6 className = "cart-prices" > Rp. { this.props.data_cartID.price } < span > /item</span > < /h6>
 
                     <
                     input type = "number"
@@ -173,7 +155,7 @@ class Checkout extends React.Component {
                     className = "cartvalue form-control"
                     min = "1"
                     placeholder = "input value ..."
-                    defaultValue = { this.state.data_carts.total_item }
+                    defaultValue = { this.props.data_cartID.total_item }
                     /> <
                     div className = "valuealign" > < button onClick = { e => this.handleCheckout(e) }
                     type = "button"
@@ -194,4 +176,11 @@ class Checkout extends React.Component {
     }
 }
 
-export default Checkout;
+const mapStateToProps = state => ({
+    data_cartID: state.cartItems.data_cartID,
+    checkout: state.cartItems.checkout
+})
+
+const mapDispatchToProps = { getCartItemID }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout)
