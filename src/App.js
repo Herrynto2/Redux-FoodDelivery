@@ -23,7 +23,6 @@ import ItemsRestoAdd from '../src/pages/Itemsrestoadd'
 import Verify from '../src/pages/Signupverify'
 import ItemsID from '../src/pages/ItemsID'
 import RestaurantID from '../src/pages/RestaurantID'
-import FoodID from '../src/pages/ItemsID2'
 import CategoryDrink from '../src/pages/Category-Drink'
 import CategoryFood from '../src/pages/Category-Food'
 import Modals from '../src/pages/Modals'
@@ -70,9 +69,6 @@ function App() {
 
         <Route path="/browse-category/1" render={(props) =>
           (<CategoryFood{...props}/>)}/>
-
-        <Route path="/food/:id" render={(props) =>
-          (<FoodID{...props}/>)}/>
 
         <Route path="/joinus" render={(props) =>
           (<CreateRestaurant{...props}/>)}/>

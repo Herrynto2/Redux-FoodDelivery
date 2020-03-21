@@ -1,33 +1,15 @@
 import React from 'react';
 import Navbarsubuser from '../components/Navbarsubuser'
 import Footer from '../components/Footer'
-import axios from 'axios'
+import { connect } from 'react-redux'
 import Cart from '../components/Cart'
+import { getCartItems } from '../redux/action/cart'
 
 class CartsItem extends React.Component {
-        constructor(props) {
-            super(props)
-            this.state = {
-                data_items: []
-            }
-        }
-        componentDidMount() {
-            this.getDataItems()
-        }
-        async getDataItems() {
-            await axios.get(`http://localhost:3000/carts`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
-                .then(res => {
-                    console.log(res.data.data)
-                    let dataArr = res.data.data
-                    this.setState({
-                        data_items: dataArr,
-                    })
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        }
 
+        componentDidMount() {
+            this.props.getCartItems()
+        }
 
         render() {
                 return ( <
@@ -39,7 +21,7 @@ class CartsItem extends React.Component {
                         <
                         h4 className = " bold mt-5 text-center mb-5" > Cart < /h4> <
                         div className = "row " > {
-                            this.state.data_items.map((val, idx) => ( <
+                            this.props.data_cart.map((val, idx) => ( <
                                     Cart key = { idx }
                                     images = { val.images }
                                     items = { val.name_item }
@@ -61,4 +43,10 @@ class CartsItem extends React.Component {
                             }
                         }
 
-                        export default CartsItem;
+                        const mapStateToProps = state => ({
+                            data_cart: state.cartItems.data_cart
+                        })
+
+                        const mapDispatchToProps = { getCartItems }
+
+                        export default connect(mapStateToProps, mapDispatchToProps)(CartsItem)

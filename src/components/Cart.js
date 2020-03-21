@@ -7,22 +7,6 @@ class Cart extends React.Component {
 
     handleDelete = async(id) => {
         const alerts = Swal.mixin({ customClass: { confirmButton: 'btn-auth btn btn-warning' } })
-            // alerts.fire({
-            //     title: 'Are you sure?',
-            //     text: "You won't be able to revert this!",
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'delete it!'
-            // }).then((result) => {
-            //     if (result.value) {
-            //         alerts.fire(
-            //             'Deleted!',
-            //             'Your file has been deleted.',
-            //             'success'
-            //         )
-            //     }
-            // })
         await axios.delete(`${process.env.REACT_APP_API_URL}/carts/${id}`, {
                 headers: {
                     Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))

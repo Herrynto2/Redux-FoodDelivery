@@ -3,7 +3,8 @@ import '../assets/Style.css'
 import Navbarsub from '../components/Navbarsub'
 import ListRestaurant from '../components/Listrestaurant'
 import Footer from '../components/Footer'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import { getDataRestaurants } from '../redux/action/restaurants'
 
 class Restaurant extends React.Component {
         constructor(props) {
@@ -14,23 +15,8 @@ class Restaurant extends React.Component {
         }
 
         componentDidMount() {
-            this.getDataItems()
+            this.props.getDataRestaurants()
         }
-
-        async getDataItems() {
-            await axios.get("http://localhost:3000/browse-restaurant")
-                .then(res => {
-                    console.log(res)
-                    let dataArr = res.data.data
-                    this.setState({ data_items: dataArr })
-                })
-                .catch(err => {
-                    console.log(err)
-                    console.log(err.response.data.message)
-                })
-
-        }
-
 
         render() {
                 return ( <
@@ -48,7 +34,7 @@ class Restaurant extends React.Component {
                         <
                         /div> <
                         div className = "row mb-5" > {
-                            this.state.data_items.map((val, idx) => ( <
+                            this.props.data_restaurants.map((val, idx) => ( <
                                     ListRestaurant key = { idx }
                                     name = { val.name_restaurant }
                                     location = { val.location }
@@ -65,4 +51,10 @@ class Restaurant extends React.Component {
                             }
                         }
 
-                        export default Restaurant;
+                        const mapStateToProps = state => ({
+                            data_restaurants: state.restaurants.data_restaurants
+                        })
+
+                        const mapDispatchToProps = { getDataRestaurants }
+
+                        export default connect(mapStateToProps, mapDispatchToProps)(Restaurant)

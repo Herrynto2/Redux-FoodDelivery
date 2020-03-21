@@ -170,7 +170,7 @@ class Profileuser extends React.Component {
             <
             div className = "col-sm-12" >
             <
-            h3 className = "tittleuserprofile" > User Profile < /h3><hr/ >
+            h3 className = "tittleuserprofile" > User Profile < /h3><hr / >
             <
             /div> <
             /div> <
@@ -194,7 +194,7 @@ class Profileuser extends React.Component {
             div className = "col-lg-1" > < /div> <
             div className = "col-lg-6" >
             <
-            small className = "balance" > Balance < /small><br/ >
+            small className = "balance" > Balance < /small><br / >
             <
             button onClick = { e => this.handleTopup(e) }
             class = "btn btn-warning btntopup"
@@ -245,7 +245,7 @@ class Profileuser extends React.Component {
             option > --Select gender-- < /option> <
             option > Man < /option> <
             option > Woman < /option> <
-            /select>   <
+            /select> <
             label
             for = "exampleFormControlInput1"
             className = "mt-2 sml" > Work < /label> <
