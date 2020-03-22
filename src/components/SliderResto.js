@@ -3,8 +3,7 @@ import { UncontrolledCarousel } from 'reactstrap';
 import Slider from '../img/slider4.png'
 
 class Slidersresto extends React.Component {
-    items = [
-        {
+    items = [{
             src: Slider,
             altText: 'Slide 1',
             caption: '',
@@ -13,7 +12,7 @@ class Slidersresto extends React.Component {
         },
         {
             src: Slider,
-            
+
             altText: 'Slide 1',
             caption: '',
             header: '',
@@ -28,12 +27,15 @@ class Slidersresto extends React.Component {
         }
     ];
     render() {
-        return (
-            <div>
-                <div className="sliders">
-                    <UncontrolledCarousel items={this.items} />
-                </div>
-            </div>
+        return ( <
+            div >
+            <
+            div className = "sliders" >
+            <
+            UncontrolledCarousel items = { this.items }
+            /> <
+            /div> <
+            /div>
         )
     }
 }

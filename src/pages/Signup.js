@@ -164,7 +164,7 @@ class Signup extends React.Component {
             div className = "text-center mt-4" >
             <
             Link to = "/login"
-            className = "text-decoration-none" > < span className = "signuplink" > Login < /span></Link >
+            className = "text-decoration-none" > < span className = "signuplink" > Back to login < /span></Link >
             <
             /div> <
             /div> <

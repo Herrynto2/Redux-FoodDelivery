@@ -22,7 +22,7 @@ class Profileuser extends React.Component {
         }
     }
     componentDidMount() {
-        this.props.getDataUser()
+        this.props.getDataUser(this.props.token)
     }
 
     // Topup
@@ -47,7 +47,7 @@ class Profileuser extends React.Component {
                     if (res.data.success !== false) {
                         try {
                             alerts.fire({ icon: 'success', text: 'topup successfully' })
-                            this.props.history.push('/userprofile') //push home page
+                            this.props.getDataUser(this.props.token)
                         } catch (error) {
                             alerts.fire({ icon: 'error', text: `${error.response.msg}` })
                         }
@@ -119,7 +119,7 @@ class Profileuser extends React.Component {
                     if (res.data.success !== false) {
                         try {
                             alerts.fire({ icon: 'success', text: 'update user successfully' })
-                            this.props.history.push('/userprofile')
+                            this.props.getDataUser(this.props.token)
                         } catch (error) {
                             alerts.fire({ icon: 'error', text: 'Failed to update' })
                         }
@@ -152,15 +152,22 @@ class Profileuser extends React.Component {
             /div> <
             div className = "row mt-3" >
             <
-            div className = "col-lg-4 sizeprofile" >
+            div className = "col-lg-4 sizeprofile" > {
+                /* <img src={process.env.REACT_APP_API_URL + this.props.data_user.images} className="sizeuserprofile mb-3" />
+                                            <CustomInput type="file" onChange={e => this.handleImages(e)} name="images" className="handleImage"/> */
+            }
+
             <
-            img src = { process.env.REACT_APP_API_URL + this.props.data_user.images }
-            className = "sizeuserprofile mb-3" / >
-            <
-            CustomInput type = "file"
-            onChange = { e => this.handleImages(e) }
+            label
+            for = "image" > < img src = { process.env.REACT_APP_API_URL + this.props.data_user.images }
+            name = "logo"
+            className = "sizeuserprofile  mb-3 mt-4" / > < /label> <
+            input type = "file"
             name = "images"
-            className = "handleImages" / >
+            id = "image"
+            hidden onChange = { e => this.handleImages(e) }
+            />
+
             <
             textarea onChange = { e => this.handleAddress(e) }
             name = "address"

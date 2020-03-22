@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { connect } from 'react-redux'
+import { getItemsRestaurants } from '../redux/action/restaurants'
 
 class ListItemResto extends React.Component {
     constructor(props) {
@@ -12,22 +13,31 @@ class ListItemResto extends React.Component {
         }
     }
 
-    // componentDidMount() {
-    //     this.getDataItems()
-    // }
-
-    // componentDidUpdate(prev, next) {
-    //     if (!this.state.onDelete) {
-    //         this.getDataItems()
-    //         console.log('text')
-    //         this.setState({onDelete:false})
-    //     }
-    // }
-
+    componentDidMount() {
+        this.props.getItemsRestaurants(this.props.token)
+    }
 
     handleDelete = async(e, id) => {
         e.preventDefault()
         const alerts = Swal.mixin({ customClass: { confirmButton: 'btn btn-warning' } })
+            // Swal.fire({
+            //     title: 'Are you sure?',
+            //     text: "You won't be able to revert this!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Yes, delete it!'
+            // }).then((result) => {
+            //     if (result.value) {
+            //         Swal.fire(
+            //             'Deleted!',
+            //             'Your file has been deleted.',
+            //             'success'
+            //         )
+            //     }
+            // })
+
         await axios.delete(`${process.env.REACT_APP_API_URL}/items/${id}`, {
                 headers: {
                     Authorization: 'Bearer ' + this.props.token
@@ -37,8 +47,7 @@ class ListItemResto extends React.Component {
                 console.log(res.data)
                 if (res.data.success !== false) {
                     alerts.fire({ icon: 'success', text: 'Item was successfully deleted' })
-                        // this.setState({onDelete:true})
-                        // this.getDataItems()
+                    this.props.getItemsRestaurants(this.props.token)
                 } else {
                     alerts.fire({ icon: 'error', title: 'Oops', text: 'delete item failed' })
                 }
@@ -47,6 +56,7 @@ class ListItemResto extends React.Component {
                 alerts.fire({ icon: 'error', text: `error` })
             })
     }
+
 
 
     render() {
@@ -84,6 +94,8 @@ class ListItemResto extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    token: state.auth.token
+    token: state.auth.token,
+    data_item: state.restaurants.data_item
 })
-export default connect(mapStateToProps)(ListItemResto)
+const mapDispatchToProps = { getItemsRestaurants }
+export default connect(mapStateToProps, mapDispatchToProps)(ListItemResto)

@@ -1,4 +1,4 @@
-import { USER_LOGIN } from '../action/types'
+import { USER_LOGIN, USER_LOGOUT } from '../action/types'
 
 
 const initialState = {
@@ -10,6 +10,10 @@ export default function authReducer(state = initialState, action) {
         case USER_LOGIN:
             return {
                 ...state,
+                token: action.payload
+            }
+        case USER_LOGOUT:
+            return {
                 token: action.payload
             }
         default:

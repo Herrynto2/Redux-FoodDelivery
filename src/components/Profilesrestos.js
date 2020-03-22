@@ -6,12 +6,13 @@ import { connect } from 'react-redux'
 class Profilerestos extends React.Component {
 
     componentDidMount() {
-        this.props.getDataAdmin()
+        this.props.getDataAdmin(this.props.token)
     }
 
     render() {
         return ( <
-            div > { console.log(this.props.data_admin) } <
+            div >
+            <
             div className = "container" >
             <
             Link to = "/restaurantprofile"
@@ -52,7 +53,8 @@ class Profilerestos extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    data_admin: state.user.data_admin
+    data_admin: state.user.data_admin,
+    token: state.auth.token
 })
 const mapDispatchToProps = { getDataAdmin }
 

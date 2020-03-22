@@ -1,6 +1,6 @@
 .formlogin {
     margin-top: 120px;
-    height: 400px;
+    height: 420px;
     box-shadow: 2px 2px 3px rgb(88, 88, 88);
     background-color: #ffffff;
     border-radius: 40px;
@@ -32,6 +32,19 @@
 .signuplink {
     font-size: 13px;
     color: rgb(71, 71, 71)
+}
+
+.signuplink:hover {
+    color: #ffc107;
+}
+
+.homelink {
+    color: #ffc107 !important;
+    font-weight: 700;
+}
+
+.homelink:hover {
+    color: rgb(71, 71, 71) !important;
 }
 
 .form-control {

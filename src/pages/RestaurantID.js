@@ -65,7 +65,7 @@ class RestaurantID extends React.Component {
                                 <
                                 h6 className = "cart-resto" > { this.state.data_resto.location } < /h6> <
                                 h6 className = "text-muted text-justify" > { this.state.data_resto.description } < /h6> <
-                                /div>   <
+                                /div> <
                                 /div> <
                                 /div> <
                                 /div> <

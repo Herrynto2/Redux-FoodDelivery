@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Modal } from 'react-bootstrap'
 import ReviewItemResto from '../components/ReviewItemResto'
 import Swal from 'sweetalert2'
+import { connect } from 'react-redux'
 
 class itemsrestoDetail extends React.Component {
         constructor(props) {
@@ -17,32 +18,31 @@ class itemsrestoDetail extends React.Component {
                 images: null,
                 total_item: '',
                 review: [],
-                //
                 show: false
             }
         }
         handleName = (e) => {
             console.log(e.target.value)
             this.setState({
-                name_item: e.target.value
+                [e.target.name_item]: e.target.value
             })
         }
         handleCategory = (e) => {
             console.log(e.target.value)
             this.setState({
-                category: e.target.value
+                [e.target.category]: e.target.value
             })
         }
         handlePrice = (e) => {
             console.log(e.target.value)
             this.setState({
-                price: e.target.value
+                [e.target.price]: e.target.value
             })
         }
         handleDescription = (e) => {
             console.log(e.target.value)
             this.setState({
-                description: e.target.value
+                [e.target.description]: e.target.value
             })
         }
         handleImages = (e) => {
@@ -62,13 +62,20 @@ class itemsrestoDetail extends React.Component {
             this.getDataItems(this.props.match.params.id)
         }
         async getDataItems(id) {
-            await axios.get(`http://localhost:3000/restaurant-items/${id}`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+            await axios.get(`http://localhost:3000/restaurant-items/${id}`, { headers: { Authorization: 'Bearer ' + this.props.token } })
                 .then(res => {
-                    console.log(res.data.review)
+                    console.log(res.data.data)
                     let dataArr = res.data.data[0]
                     let dataArr2 = res.data.review
+                    console.log(dataArr.name_item)
                     this.setState({
-                        data_items: dataArr,
+                        name_item: dataArr.name_item,
+                        images: dataArr.images,
+                        description: dataArr.description,
+                        price: dataArr.price,
+                        name_restaurant: dataArr.name_restaurant,
+                        location: dataArr.location,
+                        category: dataArr.category,
                         review: dataArr2
                     })
                 })
@@ -79,6 +86,7 @@ class itemsrestoDetail extends React.Component {
 
         //Edit Items
         handleEdit = (e) => {
+            console.log(this.state)
             const data = new FormData()
             data.append('name_item', this.state.name_item)
             data.append('category', this.state.category)
@@ -90,18 +98,18 @@ class itemsrestoDetail extends React.Component {
                 alerts.fire({ icon: 'error', text: 'text still empty' })
             } else {
                 // console.log(data) // to get data fotm username & password
-                axios.patch(`http://localhost:3000/items/${this.props.match.params.id}`, data, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+                axios.patch(`http://localhost:3000/items/${this.props.match.params.id}`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                     .then(res => {
                         console.log(res.data)
                         if (res.data.success !== false) {
                             try {
                                 alerts.fire({ icon: 'success', text: 'Item updated successfully' })
+                                this.getDataItems(this.props.match.params.id)
                             } catch (error) {
                                 console.log(error.response)
                                 alerts.fire({ icon: 'error', text: `${error.response.msg}` })
                             }
                         } else {
-                            alert('Edit items failed')
                             alerts.fire({ icon: 'error', title: 'Oops', text: 'Edit items failed' })
                         }
                     })
@@ -123,7 +131,7 @@ class itemsrestoDetail extends React.Component {
             } else {
                 await axios.patch(`${process.env.REACT_APP_API_URL}/items/total/${this.props.match.params.id}`, { total_item: `${this.state.total_item}` }, {
                         headers: {
-                            Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+                            Authorization: 'Bearer ' + this.props.token
                         }
                     })
                     .then(res => {
@@ -165,7 +173,7 @@ class itemsrestoDetail extends React.Component {
                         className = "btn-auth btn btn-warning" > Review < /button>
 
                         {
-                            this.state.data_items && ( <
+                            this.state && ( <
                                 div className = "row" >
                                 <
                                 div className = "col-lg-5" >
@@ -178,7 +186,7 @@ class itemsrestoDetail extends React.Component {
                                 <
                                 div className = "row no-gutters" >
                                 <
-                                img src = { process.env.REACT_APP_API_URL + this.state.data_items.images }
+                                img src = { process.env.REACT_APP_API_URL + this.state.images }
                                 className = "card-img card-img-detail"
                                 alt = "..." / >
                                 <
@@ -187,45 +195,48 @@ class itemsrestoDetail extends React.Component {
                                 <
                                 div className = "card-body" >
                                 <
-                                h5 className = "cart-titles" > { this.state.data_items.name_item } < /h5> <
+                                h5 className = "cart-titles" > { this.state.name_item } < /h5> <
                                 hr / >
                                 <
-                                h6 className = "cart-resto" > { this.state.data_items.name_restaurant } - { this.state.data_items.location } < /h6> <
-                                h6 className = "cart-price" > Rp. { this.state.data_items.price } < /h6> <
+                                h6 className = "cart-resto" > { this.state.name_restaurant } - { this.state.location } < /h6> <
+                                h6 className = "cart-price" > Rp. { this.state.price } < /h6> <
                                 /div> <
                                 /div> <
                                 /div> <
                                 /div> <
                                 /div> <
-                                /div>
-
-                                <
+                                /div> <
                                 div className = "col-lg-7" >
                                 <
                                 input type = "text"
                                 onChange = { e => this.handleName(e) }
                                 name = "name"
                                 className = "form-control mb-3"
-                                placeholder = { this.state.data_items.name_item }
-                                /> <
-                                input type = "text"
-                                onChange = { e => this.handleCategory(e) }
+                                defaultValue = { this.state.name_item }
+                                placeholder = "items name" / >
+                                <
+                                select onChange = { e => this.handleCategory(e) }
                                 name = "category"
-                                className = "form-control mb-3"
-                                placeholder = { this.state.data_items.category }
-                                /> <
+                                className = "form-control mb-3" >
+                                <
+                                option > --Select category-- < /option> <
+                                option > Food < /option> <
+                                option > Drink < /option> <
+                                /select> <
                                 input type = "text"
                                 onChange = { e => this.handlePrice(e) }
                                 name = "price"
                                 className = "form-control mb-3"
-                                placeholder = { this.state.data_items.price }
-                                /> <
+                                defaultValue = { this.state.price }
+                                placeholder = "price" / >
+                                <
                                 input type = "text"
                                 onChange = { e => this.handleDescription(e) }
                                 name = "description"
                                 className = "form-control mb-3"
-                                placeholder = { this.state.data_items.description }
-                                /> <
+                                defaultValue = { this.state.description }
+                                placeholder = "description" / >
+                                <
                                 input onChange = { e => this.handleImages(e) }
                                 type = "file"
                                 className = "form-control-file mb-3" / >
@@ -274,5 +285,7 @@ class itemsrestoDetail extends React.Component {
                                 )
                             }
                         }
-
-                        export default itemsrestoDetail;
+                        const mapStateToProps = state => ({
+                            token: state.auth.token
+                        })
+                        export default connect(mapStateToProps)(itemsrestoDetail)

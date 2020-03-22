@@ -1,18 +1,12 @@
 import React from 'react'
 import '../assets/Style.css'
-import Navbarsub from '../components/Navbarsub'
+import Navbarsub from '../components/Navbarsubuser'
 import ListRestaurant from '../components/Listrestaurant'
 import Footer from '../components/Footer'
 import { connect } from 'react-redux'
 import { getDataRestaurants } from '../redux/action/restaurants'
 
 class Restaurant extends React.Component {
-        constructor(props) {
-            super(props)
-            this.state = {
-                data_items: []
-            }
-        }
 
         componentDidMount() {
             this.props.getDataRestaurants()

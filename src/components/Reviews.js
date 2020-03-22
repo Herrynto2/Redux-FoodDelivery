@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
-import Bakso from '../img/bakso.png'
-import Gua from '../img/gua.jpg'
+import React from 'react';
 import { Media } from 'reactstrap';
 
 class Reviews extends React.Component {

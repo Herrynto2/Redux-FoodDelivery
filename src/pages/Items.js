@@ -1,19 +1,12 @@
 import React from 'react'
 import '../assets/Style.css'
-import Navbarsub from '../components/Navbarsubuser'
+import Navbarsubuser from '../components/Navbarsubuser'
 import ListItems from '../components/Listitems'
 import Footer from '../components/Footer'
-import { getDataItems } from '../../src/redux/action/items'
+import { getDataItems } from '../redux/action/items'
 import { connect } from 'react-redux'
 
 class Items extends React.Component {
-        // constructor(props) {
-        //     super(props)
-        //     this.state = {
-        //         data_items: [],
-        //         nextPage: null
-        //     }
-        // }
 
         componentDidMount() {
             this.props.getDataItems()
@@ -22,7 +15,7 @@ class Items extends React.Component {
         render() {
                 return ( <
                         div > { /* Navbar */ } <
-                        Navbarsub / >
+                        Navbarsubuser / >
 
                         { /* Content Items */ } <
                         div >
@@ -60,5 +53,4 @@ class Items extends React.Component {
                         })
 
                         const mapDispatchToProps = { getDataItems }
-
                         export default connect(mapStateToProps, mapDispatchToProps)(Items)

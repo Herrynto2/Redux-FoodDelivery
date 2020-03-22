@@ -28,7 +28,7 @@ class Checkout extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getCartItemID(this.props.match.params.id)
+        this.props.getCartItemID(this.props.match.params.id, this.props.token)
     }
 
     ////Checkout
@@ -53,15 +53,15 @@ class Checkout extends React.Component {
                             this.props.history.push('/cart')
                         } catch (error) {
                             console.log(error.response)
-                            alerts.fire({ icon: 'error', text: `${error.response.msg}` })
+                            alerts.fire({ icon: 'error', text: 'error' })
                         }
                     } else {
-                        alerts.fire({ icon: 'error', title: 'Oops...', text: `${res.data.msg}` })
+                        alerts.fire({ icon: 'error', title: 'Oops...', text: 'Payment failed' })
                     }
                 })
                 .catch(err => {
                     console.log({ err })
-                    alerts.fire({ icon: 'error', text: `${err.response.msg}` })
+                    alerts.fire({ icon: 'error', text: 'error' })
                 })
         }
     }

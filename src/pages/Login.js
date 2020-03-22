@@ -5,6 +5,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import { loginUser } from '../redux/action/auth'
 import { connect } from 'react-redux'
+import { Spinner } from 'reactstrap';
 
 
 class Login extends React.Component {
@@ -18,7 +19,14 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
+            load: false
         }
+    }
+    fetchData = () => {
+        this.setState({ load: true })
+        setTimeout(() => {
+            this.setState({ load: false })
+        }, 2000)
     }
 
     handleUsername = (e) => {
@@ -50,6 +58,7 @@ class Login extends React.Component {
                     console.log(res.data.data.token)
                     if (res.data.success === true) {
                         try {
+                            this.fetchData()
                             this.props.loginUser(res.data.data.token)
                             this.props.history.push('/home')
                         } catch (error) {
@@ -68,6 +77,7 @@ class Login extends React.Component {
     }
 
     render() {
+        const { load } = this.state;
         return ( <
             div >
             <
@@ -117,13 +127,19 @@ class Login extends React.Component {
             div className = "text-center" >
             <
             button onClick = { e => this.handleLogin(e) }
+            disable = { load }
             type = "button"
-            className = "btn-auth btn btn-warning mt-4" > Login < /button> <
+            className = "btn-auth btn btn-warning mt-4" > Login < /button> { load && < Spinner color = "warning" / > } <
             /div> <
             div className = "text-center mt-4" >
             <
             Link to = "/signup"
-            className = "text-decoration-none" > < span className = "signuplink" > Create new account < /span></Link >
+            className = "text-decoration-none" > < span className = "signuplink" > Create new account < /span></Link > < br / >
+            <
+            Link to = "/home"
+            className = "text-decoration-none" >
+            <
+            span className = "homelink signuplink" > Back to home < /span></Link >
             <
             /div> <
             /div> <

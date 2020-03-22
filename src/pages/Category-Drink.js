@@ -1,10 +1,10 @@
 import React from 'react'
 import '../assets/Style.css'
-import Navbarsub from '../components/Navbarsub'
 import ListItems from '../components/Listitems'
 import Footer from '../components/Footer'
 import { connect } from 'react-redux'
 import { getDrinksCategory } from '../redux/action/items'
+import Navbarsubuser from '../components/Navbarsubuser'
 
 class CategoryDrink extends React.Component {
 
@@ -16,7 +16,7 @@ class CategoryDrink extends React.Component {
         render() {
                 return ( <
                         div > { /* Navbar */ } <
-                        Navbarsub / > { /* Content Items */ } <
+                        Navbarsubuser / > { /* Content Items */ } <
                         div >
                         <
                         div className = "container margincontent" >

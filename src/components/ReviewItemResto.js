@@ -3,10 +3,12 @@ import { Media } from 'reactstrap';
 import Trash from '../img/trash.png'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import Swal from 'sweetalert2'
 
 class ReviewItemResto extends React.Component {
 
     handleDelete = async(id) => {
+        const alerts = Swal.mixin({ customClass: { confirmButton: 'btn btn-warning' } })
         await axios.delete(`${process.env.REACT_APP_API_URL}/items-review/${id}`, {
                 headers: {
                     Authorization: 'Bearer ' + this.props.token
@@ -16,19 +18,19 @@ class ReviewItemResto extends React.Component {
                 console.log(res.data)
                 if (res.data.success !== false) {
                     try {
-                        alert('success to delete items at cart')
+                        alerts.fire({ icon: 'success', text: 'Delete successful' })
 
                     } catch (error) {
                         console.log(error.response)
-                        alert(error.response.msg)
+                        alerts.fire({ icon: 'error', text: `${error.response.msg}` })
                     }
                 } else {
-                    alert('delete item failed')
+                    alerts.fire({ icon: 'error', title: 'Oops', text: 'Delete failed' })
                 }
             })
             .catch(err => {
                 console.log({ err })
-                alert(err.response.msg)
+                alerts.fire({ icon: 'error', text: `${err.response.msg}` })
             })
     }
 

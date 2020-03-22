@@ -1,25 +1,24 @@
 import React from 'react'
 import '../assets/Style.css'
-import Navbarsub from '../components/Navbarsub'
+import Navbarsub from '../components/Navbarsubuser'
 import ListItemResto from '../components/Listitemsresto'
-import Footer from '../components/Footer'
 import axios from 'axios'
-import { Pagination, PaginationItem, PaginationLink, CustomInput } from 'reactstrap';
+import { CustomInput } from 'reactstrap';
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField'
 import { Modal } from 'react-bootstrap'
 import Default from '../img/default.png'
 import Swal from 'sweetalert2'
+import { connect } from 'react-redux'
+import { getItemsRestaurants } from '../redux/action/restaurants'
 
 
 class Itemsresto extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
-                data_items: [],
                 show: false,
-                // 
                 name_item: '',
                 category: '',
                 price: '',
@@ -31,35 +30,9 @@ class Itemsresto extends React.Component {
         }
 
         componentDidMount() {
-            this.getDataItems()
+            this.props.getItemsRestaurants(this.props.token)
         }
 
-        componentDidUpdate(prevState, nextState) {
-            if (this.state.onDelete) {
-
-                console.log('text')
-                this.setState({ onDelete: true })
-                this.getDataItems();
-                return;
-            }
-            return null
-        }
-
-
-        async getDataItems() {
-                await axios.get(`http://localhost:3000/items`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
-                    .then(res => {
-                        console.log(res.data.data)
-                        let dataArr = res.data.data
-                        this.setState({
-                            data_items: dataArr,
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-            }
-            //Add Items
         handleName = (e) => {
             this.setState({
                 name_item: e.target.value
@@ -102,21 +75,22 @@ class Itemsresto extends React.Component {
             if (this.state.name_item === "" || this.state.category === "" || this.state.price === "" || this.state.description === "") {
                 alerts.fire({ icon: 'error', text: 'Data cannot be empty ' })
             } else {
-                axios.post(`http://localhost:3000/items`, data, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+                axios.post(`http://localhost:3000/items`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                     .then(res => {
                         console.log(res.data)
-                        if (res.data.success !== false) {
+                        if (res.data.success === true) {
                             try {
                                 alerts.fire({ icon: 'success', text: 'Add items successfully ' })
+                                this.props.getItemsRestaurants(this.props.token)
                             } catch (error) {
-                                alerts.fire({ icon: 'error', text: `${error.response.msg}` })
+                                alerts.fire({ icon: 'error', text: 'error' })
                             }
                         } else {
                             alerts.fire({ icon: 'error', title: 'Oops...', text: 'Add item failed' })
                         }
                     })
                     .catch(err => {
-                        alerts.fire({ icon: 'error', text: `${err.response.msg}` })
+                        alerts.fire({ icon: 'error', text: 'error' })
                     })
             }
         }
@@ -163,7 +137,7 @@ class Itemsresto extends React.Component {
                         <
                         /div> <
                         div className = "row " > {
-                            this.state.data_items.map((val, idx) => ( <
+                            this.props.data_item && this.props.data_item.map((val, idx) => ( <
                                     ListItemResto key = { idx }
                                     images = { val.images }
                                     items = { val.name_item }
@@ -171,7 +145,6 @@ class Itemsresto extends React.Component {
                                     prices = { val.price }
                                     category = { val.category }
                                     id = { val.id_item }
-                                    setState = { this.setState }
                                     />))} <
                                     /div> <
                                     /div> <
@@ -241,4 +214,11 @@ class Itemsresto extends React.Component {
                             }
                         }
 
-                        export default Itemsresto;
+
+                        const mapStateToProps = state => ({
+                            data_item: state.restaurants.data_item,
+                            token: state.auth.token
+                        })
+
+                        const mapDispatchToProps = { getItemsRestaurants }
+                        export default connect(mapStateToProps, mapDispatchToProps)(Itemsresto)

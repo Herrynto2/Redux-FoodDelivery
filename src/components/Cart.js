@@ -3,14 +3,20 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { connect } from 'react-redux'
+import { getCartItems } from '../redux/action/cart'
 
 class Cart extends React.Component {
 
-    handleDelete = async(id) => {
+    componentDidMount() {
+        this.props.getCartItems(this.props.token)
+    }
+
+    handleDelete = async(id, e) => {
+        e.preventDefault()
         const alerts = Swal.mixin({ customClass: { confirmButton: 'btn-auth btn btn-warning' } })
         await axios.delete(`${process.env.REACT_APP_API_URL}/carts/${id}`, {
                 headers: {
-                    Authorization: 'Bearer ' + this.props.login
+                    Authorization: 'Bearer ' + this.props.token
                 }
             })
             .then(res => {
@@ -18,6 +24,7 @@ class Cart extends React.Component {
                 if (res.data.success !== false) {
                     try {
                         alerts.fire({ icon: 'success', text: 'Delete item successfully' })
+                        this.props.getCartItems(this.props.token)
                     } catch (error) {
                         console.log(error.response)
                         alerts.fire({ icon: 'error', text: `${error.response.msg}` })
@@ -51,7 +58,7 @@ class Cart extends React.Component {
             h5 className = "card-texts" > { this.props.items } < /h5> <
             h7 className = "card-resto" > { this.props.restaurant } < /h7> <
             h6 className = "textcolors" > { this.props.prices } < /h6> <
-            button onClick = { e => this.handleDelete(this.props.id) }
+            button onClick = { e => this.handleDelete(this.props.id, e) }
             type = "button"
             className = "btn btn-danger mt-3" > Delete < /button> <
             /div> <
@@ -61,9 +68,9 @@ class Cart extends React.Component {
         )
     }
 }
-
 const mapStateToProps = state => ({
-    token: state.user.token
+    data_cart: state.cartItems.data_cart,
+    token: state.auth.token
 })
-
-export default connect(mapStateToProps)(Cart)
+const mapDispatchToProps = { getCartItems }
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)

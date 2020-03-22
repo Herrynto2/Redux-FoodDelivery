@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import '../assets/Style.css'
 import cart from '../img/cartsub.png'
-import search from '../img/searchsub.png'
+import { connect } from 'react-redux'
 import profile from '../img/profile2.png'
 
 import {
@@ -21,12 +21,31 @@ import {
 
 class Navbarsub extends React.Component {
     constructor(props) {
-            super(props)
-            this.toggleNavbar = this.toggleNavbar.bind(this);
-            this.closeNavbar = this.closeNavbar.bind(this);
-            this.state = {
-                collapsed: true
-            };
+        super(props)
+        this.toggleNavbar = this.toggleNavbar.bind(this);
+        this.closeNavbar = this.closeNavbar.bind(this);
+        this.state = {
+            collapsed: true,
+            login: false
+        }
+        this.loginHandler = () => {
+            this.setState({ login: true })
+        }
+        this.logoutHandler = () => {
+            this.setState({ login: false })
+        }
+    }
+
+    logout() {
+        localStorage.removeItem('token')
+            // this.props.history.push('/home')
+    }
+    componentDidMount() {
+            if (this.props.token) {
+                this.setState({ login: true })
+            } else {
+                this.setState({ login: false })
+            }
         }
         ////Navbars Togler 
     toggleNavbar() {
@@ -68,7 +87,7 @@ class Navbarsub extends React.Component {
             <
             NavItem >
             <
-            NavLink > < Link to = "/user"
+            NavLink > < Link to = "/home"
             className = "mr-5 text-decoration-none"
             href = "/components/" > < span className = "textsub" > Home < /span></Link >
             <
@@ -107,36 +126,57 @@ class Navbarsub extends React.Component {
             NavLink > < Link to = "/browse-restaurant"
             className = "text-decoration-none"
             href = "/components/" > < span className = "textsub mr-3" > Restaurant < /span></Link > < /NavLink> <
-            /NavItem> <
-            NavItem >
-            <
-            NavLink > < Link to = "/cart"
-            className = "mr-4 margin text-decoration-none cartsub"
-            href = "/components/" > < img src = { cart }
-            width = "30px"
-            alt = "" / > < /Link> <
-            /NavLink> <
-            /NavItem> <
-            NavItem >
-            <
-            NavLink > < Link to = "/profile"
-            className = "mr-4 margin text-decoration-none cartsub"
-            href = "/components/" > < img src = { profile }
-            width = "30px"
-            alt = "" / > < /Link> <
-            /NavLink> <
-            /NavItem> <
-            NavItem >
-            <
-            NavLink >
-            <
-            Link to = "/login"
-            className = "btnloginsub"
-            href = "/components/" > < button type = "button"
-            className = "btnsub btn btn-warning" > Logout < /button></Link >
-            <
-            /NavLink> <
-            /NavItem> <
+            /NavItem> {
+                this.state.login &&
+                    <
+                    NavItem >
+                    <
+                    NavLink > < Link to = "/cart"
+                className = "mr-4 margin text-decoration-none cartsub"
+                href = "/components/" > < img src = { cart }
+                width = "30px"
+                alt = "" / > < /Link> <
+                    /NavLink> <
+                    /NavItem>
+            } {
+                this.state.login &&
+                    <
+                    NavItem >
+                    <
+                    NavLink > < Link to = "/profile"
+                className = "mr-4 margin text-decoration-none cartsub"
+                href = "/components/" > < img src = { profile }
+                width = "30px"
+                alt = "" / > < /Link> <
+                    /NavLink> <
+                    /NavItem>
+            } {
+                !this.state.login &&
+                    <
+                    NavItem >
+                    <
+                    NavLink >
+                    <
+                    Link to = "/login"
+                href = "/components/" > < button type = "button"
+                className = " btn btn-warning" > Login < /button></Link >
+                    <
+                    /NavLink> <
+                    /NavItem>
+            } {
+                this.state.login &&
+                    <
+                    NavItem >
+                    <
+                    NavLink >
+                    <
+                    Link to = "/login"
+                href = "/components/" > < button type = "button"
+                className = "btn btn-warning" > Logout < /button></Link >
+                    <
+                    /NavLink> <
+                    /NavItem>
+            } <
             /Nav> <
             /Collapse> <
             /Navbar> <
@@ -145,5 +185,7 @@ class Navbarsub extends React.Component {
         )
     }
 }
-
-export default Navbarsub;
+const mapStateToProps = state => ({
+    token: state.auth.token
+})
+export default connect(mapStateToProps)(Navbarsub)

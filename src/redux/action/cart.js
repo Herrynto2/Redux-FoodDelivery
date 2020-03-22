@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { GET_CART_USER, GET_CART_ID } from './types'
+import { connect } from 'react-redux'
 
-export const getCartItems = () => dispatch => {
-    axios.get(process.env.REACT_APP_API_URL + '/carts', { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+export const getCartItems = (token) => dispatch => {
+    axios.get(process.env.REACT_APP_API_URL + '/carts', { headers: { Authorization: 'Bearer ' + token } })
         .then(res => {
             console.log(res)
             dispatch({
@@ -13,8 +14,8 @@ export const getCartItems = () => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const getCartItemID = (id) => dispatch => {
-    axios.get(process.env.REACT_APP_API_URL + `/cart/${id}`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+export const getCartItemID = (id, token) => dispatch => {
+    axios.get(process.env.REACT_APP_API_URL + `/cart/${id}`, { headers: { Authorization: 'Bearer ' + token } })
         .then(res => {
             console.log(res)
             dispatch({
@@ -25,3 +26,8 @@ export const getCartItemID = (id) => dispatch => {
         })
         .catch(err => console.log(err))
 }
+
+// const mapStateToProps = state => ({
+//     token: state.auth.token
+// })
+// export default connect(mapStateToProps)

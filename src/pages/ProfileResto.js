@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import { getDataAdmin } from '../redux/action/users'
 import { connect } from 'react-redux'
 import { CustomInput } from 'reactstrap'
+import IG from '../img/ig.png'
 
 class Profilerestaurant extends React.Component {
     constructor(props) {
@@ -21,20 +22,7 @@ class Profilerestaurant extends React.Component {
 
 
     componentDidMount() {
-        this.props.getDataAdmin()
-    }
-    async getDataResto() {
-        await axios.get(`http://localhost:3000/restaurant`, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
-            .then(res => {
-                console.log(res.data.data[0])
-                let dataArr = res.data.data[0]
-                this.setState({
-                    data_profile: dataArr
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        this.props.getDataAdmin(this.props.token)
     }
 
     /////Edit Restaurant
@@ -69,6 +57,7 @@ class Profilerestaurant extends React.Component {
             logo: e.target.files[0]
         })
     }
+
     handleEdit = (e) => {
         e.preventDefault()
         const data = new FormData()
@@ -81,13 +70,13 @@ class Profilerestaurant extends React.Component {
         if (this.state.name_restaurant === "") {
             alerts.fire({ icon: 'error', text: 'Text still empty! ' })
         } else {
-            axios.patch(`http://localhost:3000/restaurant`, data, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+            axios.patch(`http://localhost:3000/restaurant`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success !== false) {
                         try {
                             alerts.fire({ icon: 'success', text: 'update restaurant successfully ' })
-                            this.props.history.push('/restaurantprofile')
+                            this.props.getDataAdmin(this.props.token)
                         } catch (error) {
                             alert(error.response.msg)
                         }
@@ -120,7 +109,9 @@ class Profilerestaurant extends React.Component {
 
             <
             /div> <
-            /div> <
+            /div>
+
+            <
             div className = "row mt-3" >
             <
             div className = "col-lg-4 sizeprofile" >
@@ -128,15 +119,15 @@ class Profilerestaurant extends React.Component {
             Link to = "/items" > < button class = " btnitems btn btn-warning my-2 my-sm-0"
             type = "submit" > Items < /button></Link >
             <
-            img src = { process.env.REACT_APP_API_URL + this.props.data_admin.logo }
+            label
+            for = "image" > < img src = { process.env.REACT_APP_API_URL + this.props.data_admin.logo }
             name = "logo"
-            className = "sizeuserprofile mb-3 mt-4" / >
-            <
-            CustomInput type = "file"
-            onChange = { e => this.handleLogo(e) }
-            name = "images"
-            className = "handleImages" / >
-            <
+            className = "sizeuserprofile mb-3 mt-4" / > < /label> <
+            input type = "file"
+            name = ""
+            id = "image"
+            hidden onChange = { e => this.handleLogo(e) }
+            /> <
             /div> <
             div className = "col-lg-1" > < /div> <
             div className = "col-lg-6" >
@@ -198,8 +189,11 @@ class Profilerestaurant extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    data_admin: state.user.data_admin
+    data_admin: state.user.data_admin,
+    token: state.auth.token
 })
+
+
 const mapDispatchToProps = { getDataAdmin }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profilerestaurant)

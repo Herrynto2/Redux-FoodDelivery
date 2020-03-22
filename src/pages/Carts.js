@@ -8,7 +8,7 @@ import { getCartItems } from '../redux/action/cart'
 class CartsItem extends React.Component {
 
         componentDidMount() {
-            this.props.getCartItems()
+            this.props.getCartItems(this.props.token)
         }
 
         render() {
@@ -43,7 +43,7 @@ class CartsItem extends React.Component {
 
                         const mapStateToProps = state => ({
                             data_cart: state.cartItems.data_cart,
-                            token: state.user.token
+                            token: state.auth.token
                         })
 
                         const mapDispatchToProps = { getCartItems }
