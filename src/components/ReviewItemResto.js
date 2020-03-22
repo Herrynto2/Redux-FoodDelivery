@@ -2,13 +2,14 @@ import React from 'react';
 import { Media } from 'reactstrap';
 import Trash from '../img/trash.png'
 import axios from 'axios'
+import { connect } from 'react-redux'
 
 class ReviewItemResto extends React.Component {
 
     handleDelete = async(id) => {
         await axios.delete(`${process.env.REACT_APP_API_URL}/items-review/${id}`, {
                 headers: {
-                    Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+                    Authorization: 'Bearer ' + this.props.token
                 }
             })
             .then(res => {
@@ -76,4 +77,7 @@ class ReviewItemResto extends React.Component {
     }
 }
 
-export default ReviewItemResto;
+const mapStateToProps = state => ({
+    token: state.auth.token
+})
+export default connect(mapStateToProps)(ReviewItemResto)

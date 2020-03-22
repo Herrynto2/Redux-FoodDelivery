@@ -16,7 +16,7 @@ class CategoryDrink extends React.Component {
         render() {
                 return ( <
                         div > { /* Navbar */ } <
-                        Navbarsub / > { console.log('keys', this.props.data_drinks) } { /* Content Items */ } <
+                        Navbarsub / > { /* Content Items */ } <
                         div >
                         <
                         div className = "container margincontent" >

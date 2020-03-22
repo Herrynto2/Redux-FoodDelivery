@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { connect } from 'react-redux'
 
 class ListItemResto extends React.Component {
     constructor(props) {
@@ -29,7 +30,7 @@ class ListItemResto extends React.Component {
         const alerts = Swal.mixin({ customClass: { confirmButton: 'btn btn-warning' } })
         await axios.delete(`${process.env.REACT_APP_API_URL}/items/${id}`, {
                 headers: {
-                    Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+                    Authorization: 'Bearer ' + this.props.token
                 }
             })
             .then(res => {
@@ -82,4 +83,7 @@ class ListItemResto extends React.Component {
     }
 }
 
-export default ListItemResto;
+const mapStateToProps = state => ({
+    token: state.auth.token
+})
+export default connect(mapStateToProps)(ListItemResto)

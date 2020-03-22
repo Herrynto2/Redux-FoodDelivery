@@ -42,7 +42,7 @@ class ListItemRestoGuest extends React.Component {
         } else {
             await axios.post(`${process.env.REACT_APP_API_URL}/carts/${this.props.id}`, data, {
                     headers: {
-                        Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+                        Authorization: 'Bearer ' + this.props.token
                     }
                 })
                 .then(res => {
@@ -146,7 +146,8 @@ class ListItemRestoGuest extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    data_item: state.items.data_item
+    data_item: state.items.data_item,
+    token: state.auth.token
 })
 
 const mapDispatchToProps = { getDataItemsID }

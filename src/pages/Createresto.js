@@ -3,6 +3,7 @@ import '../assets/Login.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { connect } from 'react-redux'
 
 class CreateRestaurant extends React.Component {
     constructor(props) {
@@ -56,12 +57,15 @@ class CreateRestaurant extends React.Component {
         data.append('logo', this.state.logo)
 
         const alerts = Swal.mixin({ customClass: { confirmButton: 'btn btn-warning' } })
-
         if (this.state.logo === null) {
             alerts.fire({ icon: 'error', text: 'Data connot be empty' })
         } else {
             // console.log(data) // to get data fotm username & password
-            axios.post(`http://localhost:3000/restaurant`, data, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+            axios.post(`http://localhost:3000/restaurant`, data, {
+                    headers: {
+                        Authorization: 'Bearer ' + this.props.token
+                    }
+                })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success !== false) {
@@ -176,4 +180,7 @@ class CreateRestaurant extends React.Component {
     }
 }
 
-export default CreateRestaurant;
+const mapStateToProps = state => ({
+    token: state.auth.token
+})
+export default connect(mapStateToProps)(CreateRestaurant)

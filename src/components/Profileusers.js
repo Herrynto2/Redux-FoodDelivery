@@ -53,7 +53,8 @@ class Profileusers extends React.Component {
 
 const mapStateToProps = state => ({
     data_user: state.user.data_user,
-    data_updated: state.user.data_updated
+    data_updated: state.user.data_updated,
+    login: state.user.token
 })
 const mapDispatchToProps = { getDataUser }
 

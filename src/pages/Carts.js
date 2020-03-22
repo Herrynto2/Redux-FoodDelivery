@@ -15,13 +15,12 @@ class CartsItem extends React.Component {
                 return ( <
                         div >
                         <
-                        Navbarsubuser / >
-                        <
+                        Navbarsubuser / > { console.log(this.props.data_cart) } <
                         div className = 'container margincart' >
                         <
                         h4 className = " bold mt-5 text-center mb-5" > Cart < /h4> <
                         div className = "row " > {
-                            this.props.data_cart.map((val, idx) => ( <
+                            this.props.data_cart && this.props.data_cart.map((val, idx) => ( <
                                     Cart key = { idx }
                                     images = { val.images }
                                     items = { val.name_item }
@@ -34,8 +33,7 @@ class CartsItem extends React.Component {
                                     /div> <
                                     /div>
 
-
-                                    <
+                                    { console.log(this.props.token) } <
                                     Footer / >
                                     <
                                     /div>
@@ -44,7 +42,8 @@ class CartsItem extends React.Component {
                         }
 
                         const mapStateToProps = state => ({
-                            data_cart: state.cartItems.data_cart
+                            data_cart: state.cartItems.data_cart,
+                            token: state.user.token
                         })
 
                         const mapDispatchToProps = { getCartItems }

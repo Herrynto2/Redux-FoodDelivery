@@ -5,6 +5,7 @@ import cart from '../img/cart.png'
 import Swal from 'sweetalert2'
 import { Modal } from 'react-bootstrap'
 import { getDataItemsID } from '../redux/action/items'
+import { loginUser } from '../redux/action/auth'
 import { connect } from 'react-redux'
 
 class ListItems extends React.Component {
@@ -42,7 +43,7 @@ class ListItems extends React.Component {
         } else {
             await axios.post(`${process.env.REACT_APP_API_URL}/carts/${this.props.id}`, data, {
                     headers: {
-                        Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+                        Authorization: 'Bearer ' + this.props.token
                     }
                 })
                 .then(res => {
@@ -55,6 +56,7 @@ class ListItems extends React.Component {
                         }
                     } else {
                         alerts.fire({ icon: 'error', title: 'Oops...', text: 'Failed to save items' })
+                        console.log(res.data)
                     }
                 })
                 .catch(err => {
@@ -67,6 +69,7 @@ class ListItems extends React.Component {
     render() {
         return ( <
             div className = "col-lg-3" >
+
             <
             Link to = { `/detail-items/${this.props.id}` }
             className = "text-decoration-none" >
@@ -143,7 +146,8 @@ class ListItems extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    data_item: state.items.data_item
+    data_item: state.items.data_item,
+    token: state.auth.token
 })
 
 const mapDispatchToProps = { getDataItemsID }

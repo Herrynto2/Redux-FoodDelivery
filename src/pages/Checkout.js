@@ -42,7 +42,7 @@ class Checkout extends React.Component {
         } else {
             await axios.post(`${process.env.REACT_APP_API_URL}/checkout/${this.props.match.params.id}`, data, {
                     headers: {
-                        Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+                        Authorization: 'Bearer ' + this.props.token
                     }
                 })
                 .then(res => {
@@ -178,9 +178,9 @@ class Checkout extends React.Component {
 
 const mapStateToProps = state => ({
     data_cartID: state.cartItems.data_cartID,
-    checkout: state.cartItems.checkout
+    checkout: state.cartItems.checkout,
+    token: state.auth.token
+
 })
-
 const mapDispatchToProps = { getCartItemID }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout)

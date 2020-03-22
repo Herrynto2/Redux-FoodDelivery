@@ -42,7 +42,7 @@ class Profileuser extends React.Component {
             alerts.fire({ icon: 'error', text: 'Please input the value! ' })
         } else {
             console.log(data)
-            axios.patch(`http://localhost:3000/topup`, data, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+            axios.patch(`http://localhost:3000/topup`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                 .then(res => {
                     if (res.data.success !== false) {
                         try {
@@ -113,7 +113,7 @@ class Profileuser extends React.Component {
         if (this.state.email === "") {
             alerts.fire({ icon: 'error', text: 'Text still empty! ' })
         } else {
-            axios.patch(`http://localhost:3000/profile`, data, { headers: { Authorization: 'Bearer ' + JSON.parse(window.localStorage.getItem('token')) } })
+            axios.patch(`http://localhost:3000/profile`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success !== false) {
@@ -250,7 +250,8 @@ class Profileuser extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    data_user: state.user.data_user
+    data_user: state.user.data_user,
+    token: state.auth.token
 })
 const mapDispatchToProps = { getDataUser }
 
