@@ -61,7 +61,7 @@ class CreateRestaurant extends React.Component {
             alerts.fire({ icon: 'error', text: 'Data connot be empty' })
         } else {
             // console.log(data) // to get data fotm username & password
-            axios.post(`http://localhost:3000/restaurant`, data, {
+            axios.post(`${process.env.REACT_APP_API_URL }/restaurant`, data, {
                     headers: {
                         Authorization: 'Bearer ' + this.props.token
                     }

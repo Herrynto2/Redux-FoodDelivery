@@ -46,7 +46,7 @@ class ForgotPassword extends React.Component {
             alerts.fire({ icon: 'error', text: 'confirm password must be same' })
             return
         } else {
-            axios.patch('http://localhost:3000/forgot-password', data)
+            axios.patch(`${process.env.REACT_APP_API_URL }/forgot-password`, data)
                 .then(res => {
                     console.log(res.data.verification_code)
                     if (res.data.success !== false) {

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import '../assets/Style.css'
 import cart from '../img/cartsub.png'
 import { connect } from 'react-redux'
 import profile from '../img/profile2.png'
+import { logoutUser } from '../redux/action/auth'
 
 import {
     Collapse,
@@ -37,8 +38,8 @@ class Navbarsub extends React.Component {
     }
 
     logout() {
-        localStorage.removeItem('token')
-            // this.props.history.push('/home')
+        this.props.logoutUser()
+        this.props.history.push('/login')
     }
     componentDidMount() {
             if (this.props.token) {
@@ -170,8 +171,8 @@ class Navbarsub extends React.Component {
                     <
                     NavLink >
                     <
-                    Link to = "/login"
-                href = "/components/" > < button type = "button"
+                    Link href = "/components/" > < button type = "button"
+                onClick = { e => this.logout() }
                 className = "btn btn-warning" > Logout < /button></Link >
                     <
                     /NavLink> <
@@ -188,4 +189,5 @@ class Navbarsub extends React.Component {
 const mapStateToProps = state => ({
     token: state.auth.token
 })
-export default connect(mapStateToProps)(Navbarsub)
+const mapDispatchToProps = { logoutUser }
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbarsub))

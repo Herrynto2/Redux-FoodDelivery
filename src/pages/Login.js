@@ -19,13 +19,13 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            load: false
+            load:false
         }
     }
     fetchData = () => {
-        this.setState({ load: true })
+        this.setState({load:true})
         setTimeout(() => {
-            this.setState({ load: false })
+            this.setState({load:false})
         }, 2000)
     }
 
@@ -53,12 +53,12 @@ class Login extends React.Component {
         if (this.state.username === "" && this.state.password === "") {
             alerts.fire({ icon: 'error', text: 'Data connot be empty' })
         } else {
-            axios.post('http://localhost:3000/login', data)
+            axios.post(`${process.env.REACT_APP_API_URL}/login`, data)
                 .then(res => {
                     console.log(res.data.data.token)
-                    if (res.data.success === true) {
+                    if (res.data.success === true) { 
                         try {
-                            this.fetchData()
+                            // this.fetchData()
                             this.props.loginUser(res.data.data.token)
                             this.props.history.push('/home')
                         } catch (error) {
@@ -77,78 +77,40 @@ class Login extends React.Component {
     }
 
     render() {
-        const { load } = this.state;
-        return ( <
-            div >
-            <
-            div className = "bg" >
-            <
-            div className = "container" >
-            <
-            div className = "row justify-content-center" >
-            <
-            div className = "col-lg-4 info-panel" >
-            <
-            div className = "row" >
-            <
-            div className = "col-lg formlogin pl-5 pr-5 pt-5" >
-            <
-            div className = "titlelogin" > < label > Login < /label></div >
-            <
-            div class = "form-group" >
-            <
-            label
-            for = "exampleFormControlInput1"
-            className = "text-dark gray" > Username < /label> <
-            input type = "text"
-            onChange = { e => this.handleUsername(e) }
-            className = "form-control"
-            name = "username"
-            id = "exampleFormControlInput1"
-            placeholder = "username ..." / >
-            <
-            label
-            for = "exampleFormControlInput1"
-            className = "mt-3" > password < /label> <
-            input type = "password"
-            onChange = { e => this.handlePassword(e) }
-            className = "form-control"
-            name = "password"
-            id = "exampleFormControlInput1"
-            placeholder = "password ..." / >
-            <
-            /div> <
-            div className = "text-right" >
-            <
-            Link to = "/forgot-password"
-            className = "text-decoration-none" > < span className = "signuplink forgotlink" > forgot the password < /span></Link >
-            <
-            /div> <
-            div className = "text-center" >
-            <
-            button onClick = { e => this.handleLogin(e) }
-            disable = { load }
-            type = "button"
-            className = "btn-auth btn btn-warning mt-4" > Login < /button> { load && < Spinner color = "warning" / > } <
-            /div> <
-            div className = "text-center mt-4" >
-            <
-            Link to = "/signup"
-            className = "text-decoration-none" > < span className = "signuplink" > Create new account < /span></Link > < br / >
-            <
-            Link to = "/home"
-            className = "text-decoration-none" >
-            <
-            span className = "homelink signuplink" > Back to home < /span></Link >
-            <
-            /div> <
-            /div> <
-            /div> <
-            /div> <
-            /div> <
-            /div> <
-            /div> <
-            /div>
+        return (
+            <div>
+                <div className="bg">
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <div className="col-lg-4 info-panel">
+                                <div className="row">
+                                    <div className="col-lg formlogin pl-5 pr-5 pt-5">
+                                        <div className="titlelogin"><label>Login</label></div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1" className="text-dark gray">Username</label>
+                                            <input type="text" onChange={e => this.handleUsername(e)} className="form-control" name="username" id="exampleFormControlInput1" placeholder="username ..." />
+                                            <label for="exampleFormControlInput1" className="mt-3">password</label>
+                                            <input type="password" onChange={e => this.handlePassword(e)} className="form-control" name="password" id="exampleFormControlInput1" placeholder="password ..." />
+                                        </div>
+                                        <div className="text-right">
+                                            <Link to="/forgot-password" className="text-decoration-none"><span className="signuplink forgotlink">forgot the password</span></Link>
+                                        </div>
+                                        <div className="text-center">
+                                            <button onClick={e => this.handleLogin(e)} type="button" className="btn-auth btn btn-warning mt-4">Login</button>
+                                            {/* {load && <Spinner color="warning" />} */}
+                                        </div>
+                                        <div className="text-center mt-4">
+                                            <Link to="/signup" className="text-decoration-none"><span className="signuplink">Create new account</span></Link><br/>
+                                            <Link to="/home" className="text-decoration-none">
+                                            <span className="homelink signuplink">Back to home</span></Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

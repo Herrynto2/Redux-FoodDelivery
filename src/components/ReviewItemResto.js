@@ -4,8 +4,13 @@ import Trash from '../img/trash.png'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
+import { getItemRestaurantID } from '../redux/action/restaurants'
 
 class ReviewItemResto extends React.Component {
+
+    componentDidMount() {
+        this.props.getItemRestaurantID(this.props.id, this.props.token)
+    }
 
     handleDelete = async(id) => {
         const alerts = Swal.mixin({ customClass: { confirmButton: 'btn btn-warning' } })
@@ -19,6 +24,8 @@ class ReviewItemResto extends React.Component {
                 if (res.data.success !== false) {
                     try {
                         alerts.fire({ icon: 'success', text: 'Delete successful' })
+                        this.props.getItemRestaurantID(this.props.id)
+                        console.log(this.props.data_review)
 
                     } catch (error) {
                         console.log(error.response)
@@ -37,6 +44,7 @@ class ReviewItemResto extends React.Component {
     render() {
         return ( <
             div >
+
             <
             div className = "marginreview" >
             <
@@ -80,6 +88,8 @@ class ReviewItemResto extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    token: state.auth.token
+    token: state.auth.token,
+    data_review: state.restaurants.data_review
 })
-export default connect(mapStateToProps)(ReviewItemResto)
+const mapDispatchToProps = { getItemRestaurantID }
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewItemResto)

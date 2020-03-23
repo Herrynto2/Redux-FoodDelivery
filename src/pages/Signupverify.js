@@ -26,7 +26,7 @@ class Verify extends React.Component {
         if (this.state.code === "") {
             alerts.fire({ icon: 'error', text: 'Code cannot be empty' })
         } else {
-            axios.patch(`http://localhost:3000/verify?code=${data.code}`)
+            axios.patch(`${process.env.REACT_APP_API_URL }/verify?code=${data.code}`)
                 .then(res => {
                     if (res.status === 200) {
                         try {

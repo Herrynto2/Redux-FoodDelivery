@@ -5,19 +5,20 @@ import { Modal } from 'react-bootstrap'
 import ReviewItemResto from '../components/ReviewItemResto'
 import Swal from 'sweetalert2'
 import { connect } from 'react-redux'
+import { getItemRestaurantID } from '../redux/action/restaurants'
 
 class itemsrestoDetail extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
-                data_items: null,
+                // data_items: null,
                 name_item: '',
                 category: '',
                 price: '',
                 description: '',
                 images: null,
                 total_item: '',
-                review: [],
+                // review: [],
                 show: false
             }
         }
@@ -59,30 +60,30 @@ class itemsrestoDetail extends React.Component {
         }
 
         componentDidMount() {
-            this.getDataItems(this.props.match.params.id)
-        }
-        async getDataItems(id) {
-            await axios.get(`http://localhost:3000/restaurant-items/${id}`, { headers: { Authorization: 'Bearer ' + this.props.token } })
-                .then(res => {
-                    console.log(res.data.data)
-                    let dataArr = res.data.data[0]
-                    let dataArr2 = res.data.review
-                    console.log(dataArr.name_item)
-                    this.setState({
-                        name_item: dataArr.name_item,
-                        images: dataArr.images,
-                        description: dataArr.description,
-                        price: dataArr.price,
-                        name_restaurant: dataArr.name_restaurant,
-                        location: dataArr.location,
-                        category: dataArr.category,
-                        review: dataArr2
-                    })
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        }
+                this.props.getItemRestaurantID(this.props.match.params.id, this.props.token)
+            }
+            // async getDataItems(id) {
+            //     await axios.get(`${process.env.REACT_APP_API_URL }/restaurant-items/${id}`, { headers: { Authorization: 'Bearer ' + this.props.token } })
+            //         .then(res => {
+            //             console.log(res.data.data)
+            //             let dataArr = res.data.data[0]
+            //             let dataArr2 = res.data.review
+            //             console.log(dataArr.name_item)
+            //             this.setState({
+            //                 name_item:dataArr.name_item,
+            //                 images: dataArr.images,
+            //                 description: dataArr.description,
+            //                 price:dataArr.price,
+            //                 name_restaurant: dataArr.name_restaurant,
+            //                 location: dataArr.location,
+            //                 category: dataArr.category,
+            //                 review: dataArr2
+            //             })
+            //         })
+            //         .catch(err => {
+            //             console.log(err)
+            //         })
+            // }
 
         //Edit Items
         handleEdit = (e) => {
@@ -98,7 +99,7 @@ class itemsrestoDetail extends React.Component {
                 alerts.fire({ icon: 'error', text: 'text still empty' })
             } else {
                 // console.log(data) // to get data fotm username & password
-                axios.patch(`http://localhost:3000/items/${this.props.match.params.id}`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
+                axios.patch(`${process.env.REACT_APP_API_URL }/items/${this.props.match.params.id}`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                     .then(res => {
                         console.log(res.data)
                         if (res.data.success !== false) {
@@ -170,10 +171,8 @@ class itemsrestoDetail extends React.Component {
                         button type = "button"
                         onClick = {
                             () => { this.handleModal() } }
-                        className = "btn-auth btn btn-warning" > Review < /button>
-
-                        {
-                            this.state && ( <
+                        className = "btn-auth btn btn-warning" > Review < /button> { console.log(this.props.data_itemID) } {
+                            this.props.data_itemID && ( <
                                 div className = "row" >
                                 <
                                 div className = "col-lg-5" >
@@ -186,7 +185,7 @@ class itemsrestoDetail extends React.Component {
                                 <
                                 div className = "row no-gutters" >
                                 <
-                                img src = { process.env.REACT_APP_API_URL + this.state.images }
+                                img src = { process.env.REACT_APP_API_URL + this.props.data_itemID.images }
                                 className = "card-img card-img-detail"
                                 alt = "..." / >
                                 <
@@ -195,11 +194,11 @@ class itemsrestoDetail extends React.Component {
                                 <
                                 div className = "card-body" >
                                 <
-                                h5 className = "cart-titles" > { this.state.name_item } < /h5> <
+                                h5 className = "cart-titles" > { this.props.data_itemID.name_item } < /h5> <
                                 hr / >
                                 <
-                                h6 className = "cart-resto" > { this.state.name_restaurant } - { this.state.location } < /h6> <
-                                h6 className = "cart-price" > Rp. { this.state.price } < /h6> <
+                                h6 className = "cart-resto" > { this.props.data_itemID.name_restaurant } - { this.props.data_itemID.location } < /h6> <
+                                h6 className = "cart-price" > Rp. { this.props.data_itemID.price } < /h6> <
                                 /div> <
                                 /div> <
                                 /div> <
@@ -212,7 +211,7 @@ class itemsrestoDetail extends React.Component {
                                 onChange = { e => this.handleName(e) }
                                 name = "name"
                                 className = "form-control mb-3"
-                                defaultValue = { this.state.name_item }
+                                defaultValue = { this.props.data_itemID.name_item }
                                 placeholder = "items name" / >
                                 <
                                 select onChange = { e => this.handleCategory(e) }
@@ -227,14 +226,14 @@ class itemsrestoDetail extends React.Component {
                                 onChange = { e => this.handlePrice(e) }
                                 name = "price"
                                 className = "form-control mb-3"
-                                defaultValue = { this.state.price }
+                                defaultValue = { this.props.data_itemID.price }
                                 placeholder = "price" / >
                                 <
                                 input type = "text"
                                 onChange = { e => this.handleDescription(e) }
                                 name = "description"
                                 className = "form-control mb-3"
-                                defaultValue = { this.state.description }
+                                defaultValue = { this.props.data_itemID.description }
                                 placeholder = "description" / >
                                 <
                                 input onChange = { e => this.handleImages(e) }
@@ -268,7 +267,7 @@ class itemsrestoDetail extends React.Component {
                         Modal.Header closeButton > < span className = "bold text-muted" > Reviews < /span></Modal.Header >
                         <
                         Modal.Body className = "text-center" > {
-                            this.state.review.map((val, idx) => ( <
+                            this.props.data_review.map((val, idx) => ( <
                                     ReviewItemResto name = { val.name_user }
                                     review = { val.review }
                                     date_created = { val.date_created }
@@ -286,6 +285,9 @@ class itemsrestoDetail extends React.Component {
                             }
                         }
                         const mapStateToProps = state => ({
-                            token: state.auth.token
+                            token: state.auth.token,
+                            data_review: state.restaurants.data_review,
+                            data_itemID: state.restaurants.data_itemID
                         })
-                        export default connect(mapStateToProps)(itemsrestoDetail)
+                        const mapDispatchToProps = { getItemRestaurantID }
+                        export default connect(mapStateToProps, mapDispatchToProps)(itemsrestoDetail)

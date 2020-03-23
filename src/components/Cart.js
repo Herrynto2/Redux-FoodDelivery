@@ -64,7 +64,7 @@ class Cart extends React.Component {
             /div> <
             /div> <
             /Link> <
-            /div>
+            /div> 
         )
     }
 }

@@ -19,7 +19,7 @@ class RestaurantID extends React.Component {
         }
 
         async getDataResto(id) {
-            await axios.get(`http://localhost:3000/detail-restaurant/${id}`)
+            await axios.get(`${process.env.REACT_APP_API_URL }/detail-restaurant/${id}`)
                 .then(res => {
                     console.log(res)
                     console.log('berhasil')

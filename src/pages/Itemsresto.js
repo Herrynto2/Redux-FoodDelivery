@@ -75,7 +75,7 @@ class Itemsresto extends React.Component {
             if (this.state.name_item === "" || this.state.category === "" || this.state.price === "" || this.state.description === "") {
                 alerts.fire({ icon: 'error', text: 'Data cannot be empty ' })
             } else {
-                axios.post(`http://localhost:3000/items`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
+                axios.post(`${process.env.REACT_APP_API_URL }/items`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                     .then(res => {
                         console.log(res.data)
                         if (res.data.success === true) {

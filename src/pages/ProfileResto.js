@@ -70,7 +70,7 @@ class Profilerestaurant extends React.Component {
         if (this.state.name_restaurant === "") {
             alerts.fire({ icon: 'error', text: 'Text still empty! ' })
         } else {
-            axios.patch(`http://localhost:3000/restaurant`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
+            axios.patch(`${ process.env.REACT_APP_API_URL }/restaurant`, data, { headers: { Authorization: 'Bearer ' + this.props.token } })
                 .then(res => {
                     console.log(res.data)
                     if (res.data.success !== false) {

@@ -78,7 +78,7 @@ class Signup extends React.Component {
         if (this.state.username === "" && this.state.password === "") {
             alerts.fire({ icon: 'error', text: 'Username or password cannot be empty' })
         } else {
-            axios.post('http://localhost:3000/register', data)
+            axios.post(`${process.env.REACT_APP_API_URL }/register`, data)
                 .then(res => {
                     console.log(res.data.Verification_codes)
                     if (res.status === 200) {
